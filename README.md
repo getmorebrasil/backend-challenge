@@ -22,13 +22,13 @@ Exemplo de retorno de um json de lojas:
     "image_blob":"data:image/png;base64,...",
   },
   {
-    "id":2
+    "id":2,
     "name":"Havan",
     "takeback":3.575,
     "image_blob":"data:image/png;base64,...",
   },
   {
-    "id":3
+    "id":3,
     "name":"Netshoes",
     "takeback":6.003,
     "image_blob":"data:image/png;base64,...",
