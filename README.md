@@ -19,9 +19,9 @@ Esse é o esquema de uma categoria:
 
 | Nome do atributo | Tipo          | Comentário                                                                                      |
 |------------------|---------------|-------------------------------------------------------------------------------------------------|
-| id               | number        | Identificador único da categoria                                                                |
-| name             | string        | Nome da categoria                                                                               |
-| childrenIds      | Array<number> | Lista de ids dos filhos da categoria. É uma lista vazia se a categoria é folha (não tem filhos) |
+| id               | `number`        | Identificador único da categoria                                                                |
+| name             | `string`        | Nome da categoria                                                                               |
+| childrenIds      | `Array<number>` | Lista de ids dos filhos da categoria. É uma lista vazia se a categoria é folha (não tem filhos) |
  
 A rota POST /categories deve receber uma única categoria e registrá-la. 
 Segue um exemplo de requisições criando a árvore "Moda":
@@ -47,6 +47,11 @@ POST /categories
   "name": "Roupas",
   "childrenIds": []
 }
+
+Resposta:
+{
+  "ok": true
+}
 ```
 ## 3. Cria a categoria de moda masculina
 ```json
@@ -57,6 +62,7 @@ POST /categories
   "name": "Masculina",
   "childrenIds": [300],
 }
+
 Resposta:
 {
   "ok": true
@@ -71,6 +77,7 @@ POST /categories
   "name": "Feminina",
   "childrenIds": [301]
 }
+
 Resposta:
 {
   "ok": true
@@ -85,6 +92,7 @@ POST /categories
   "name": "Moda",
   "childrenIds": [200, 201]
 }
+
 Resposta:
 {
   "ok": true
@@ -95,6 +103,7 @@ Exemplo:
 ```json
 Requisição:
 GET /categories/1
+
 Resposta:
 [
   {
@@ -116,6 +125,7 @@ Exemplo:
 ```json
 Requisição:
 GET /categories/1
+
 Resposta:
 {
   "id": 1,
@@ -137,6 +147,7 @@ POST /categories
   "name": "Categoria exemplo",
   "childrenIds": [200, 201, 202, 203]
 }
+
 Resposta:
 {
   "ok": false,
