@@ -23,9 +23,10 @@ Esse é o esquema de uma categoria:
 | name             | `string`        | Nome da categoria                                                                               |
 | childrenIds      | `Array<number>` | Lista de ids dos filhos da categoria. É uma lista vazia se a categoria é folha (não tem filhos) |
  
+## POST /categories
 A rota POST /categories deve receber uma única categoria e registrá-la. 
 Segue um exemplo de requisições criando a árvore "Moda":
-## 1. Cria a categoria de roupas masculinas
+#### 1. Cria a categoria de roupas masculinas
 ```json
 Requisição:
 POST /categories
@@ -39,7 +40,7 @@ Resposta:
   "ok": true
 }
 ```
-## 2. Cria a categoria de roupas femininas
+#### 2. Cria a categoria de roupas femininas
 ```json
 POST /categories
 {
@@ -53,7 +54,7 @@ Resposta:
   "ok": true
 }
 ```
-## 3. Cria a categoria de moda masculina
+#### 3. Cria a categoria de moda masculina
 ```json
 Requisição:
 POST /categories
@@ -68,7 +69,7 @@ Resposta:
   "ok": true
 }
 ```
-## 4. Cria a categoria de moda feminina
+#### 4. Cria a categoria de moda feminina
 ```json
 Requisição:
 POST /categories
@@ -83,7 +84,7 @@ Resposta:
   "ok": true
 }
 ```
-## 5. Cria a categoria de moda
+#### 5. Cria a categoria de moda
 ```json
 Requisição:
 POST /categories
@@ -98,6 +99,8 @@ Resposta:
   "ok": true
 }
 ```
+
+## GET /categories
 A rota `GET/categories` deve retornar uma lista com todas as categorias registradas.
 Exemplo:
 ```json
@@ -120,6 +123,7 @@ Resposta:
 ]
 ```
 
+## GET /categories/:id
 A rota `GET /categories/:id` deve retornar os dados da categoria com o `id` passado.
 Exemplo:
 ```json
