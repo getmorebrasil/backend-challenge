@@ -1,6 +1,6 @@
 # Desafio backend
  
-Você deve desenvolver uma API para registro e obtenção de categorias.
+Você deve desenvolver uma API HTTP para registro e obtenção de categorias.
 
 As categorias formam uma árvore, onde cada categoria aponta para seu pai.
 
