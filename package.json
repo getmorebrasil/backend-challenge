@@ -1,0 +1,24 @@
+{
+  "name": "backend-challenge",
+  "version": "1.0.0",
+  "description": "Você deve desenvolver uma API para registro e obtenção de categorias.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Baldessar/backend-challenge.git"
+  },
+  "author": "Baldessar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Baldessar/backend-challenge/issues"
+  },
+  "homepage": "https://github.com/Baldessar/backend-challenge#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3"
+  },
+  "devDependencies": {}
+}
