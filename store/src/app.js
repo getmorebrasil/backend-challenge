@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 // utilizando mongoose para estruturacao do database
 // sendo store o nome dado ao database criado
 mongoose.connect('mongodb://localhost/store');
-let db = mongoose.connection;
+const db = mongoose.connection;
 
 // checa se ha algum erro no db
 db.on('error', (err) => {
@@ -15,11 +15,11 @@ db.on('error', (err) => {
 // inicia app
 const app = express();
 
-let Category = require('./model/category')
+const Category = require('./model/category')
 
 app.get('/categories', (req, res) => {
 	// escondendo o _id no json e ordenando as categorias por id fornecido
-	Category.find({}, {'_id' : 0}).sort('id').exec(function(err, categories) {
+	Category.find({}, {'_id' : 0}).sort('id').exec((err, categories) => {
 		if (err) {
 			console.log(err);
 		} else {
@@ -28,6 +28,12 @@ app.get('/categories', (req, res) => {
 			});
 				
 		}
+	});
+});
+
+app.get('/categories/:id', (req, res) => {
+	Category.find({'id' : req.params.id}, {'_id' : 0}, (err, category) => {
+		res.send({ Category : category});
 	});
 });
 

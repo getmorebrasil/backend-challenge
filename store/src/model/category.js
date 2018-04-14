@@ -1,6 +1,6 @@
-let mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
-let categorySchema = mongoose.Schema({
+const categorySchema = mongoose.Schema({
 	id : {
 		type : Number,
 		required : true
@@ -15,4 +15,4 @@ let categorySchema = mongoose.Schema({
 	}
 });
 
-let Category = module.exports = mongoose.model('Category', categorySchema);
+const Category = module.exports = mongoose.model('Category', categorySchema);
