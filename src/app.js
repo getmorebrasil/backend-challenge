@@ -1,14 +1,14 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 
-var jsonFile = require("./jsonFile"); 
+var jsonFile = require("../data/jsonFile.json"); 
 
 var app = express();
 app.use(bodyParser.json());
 
-app.get('/', function (req, res) {
+//return a list with all categories(still need to work on the presentation)
+app.get('/categories', function (req, res) {
   var JsonRes = JSON.stringify(jsonFile, 1, 4);
-  //res.json(jsonFile);
   res.send(JsonRes);
 });
 
