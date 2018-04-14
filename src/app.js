@@ -12,6 +12,15 @@ app.get('/categories', function (req, res) {
   res.send(JsonRes);
 });
 
+//filter categories by Id
+app.get('/categories/:id',function(req,res,next) {
+	var id = req.params.id;
+	var wantedCategorie = jsonFile.categories.filter(function(category) {
+		return category.id == id;
+	});
+	res.send(wantedCategorie);
+})
+
 app.post('/', function(req, res) {
 	//res.send('Adoro o Morro');
 	res.send(req.body.key);
