@@ -1,12 +1,3 @@
 {
-  "pessoa":[{
-    "id": 1,
-    "name": "Moda", 
-    "childrenIds": [200, 201]
-  },
-  {
-    "id": 201,
-    "name": "Feminina",
-    "childrenIds": [301]
-  }]
+  "categories":[]
 }
