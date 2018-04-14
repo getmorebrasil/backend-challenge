@@ -1,0 +1,24 @@
+{
+  "name": "src",
+  "version": "1.0.0",
+  "description": "API para registro e obtencao de categorias",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ljmotta/backend-challenge.git"
+  },
+  "author": "Luiz Joao Motta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ljmotta/backend-challenge/issues"
+  },
+  "homepage": "https://github.com/ljmotta/backend-challenge#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "mongoose": "^5.0.14"
+  }
+}
