@@ -9,7 +9,7 @@ let categorySchema = mongoose.Schema({
 		type : String,
 		required : true
 	},
-	chilndrenId : {
+	childrenId : {
 		type : [Number],
 		required : true
 	}

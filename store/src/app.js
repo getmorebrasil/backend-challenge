@@ -1,5 +1,5 @@
 const express = require('express');
-const body-parser = require('body-parser');
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 // utilizando mongoose para estruturacao do database
@@ -15,3 +15,23 @@ db.on('error', (err) => {
 // inicia app
 const app = express();
 
+let Category = require('./model/category')
+
+app.get('/categories', (req, res) => {
+	// escondendo o _id no json e ordenando as categorias por id fornecido
+	Category.find({}, {'_id' : 0}).sort('id').exec(function(err, categories) {
+		if (err) {
+			console.log(err);
+		} else {
+			res.send({
+				Categories : categories
+			});
+				
+		}
+	});
+});
+
+// usado para debugar
+app.listen(3000, () => {
+	console.log('Server started in port 3000...');
+});
