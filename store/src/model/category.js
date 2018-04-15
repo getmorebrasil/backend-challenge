@@ -12,7 +12,7 @@ const categorySchema = mongoose.Schema({
 	childrenId : {
 		type : [Number],
 		required : true
-	}
+	},
 });
 
 const Category = module.exports = mongoose.model('Category', categorySchema);
