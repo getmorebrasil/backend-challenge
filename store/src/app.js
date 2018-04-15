@@ -1,4 +1,5 @@
 const express = require('express');
+const expressValidator = require('express-validator');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
@@ -19,9 +20,26 @@ const app = express();
 // importando o modelo da db
 const Category = require('./model/category');
 
-// body parser
+// body parser middleware
 app.use(bodyParser.urlencoded({extended : false}));
 app.use(bodyParser.json());
+
+// express validator middleware
+app.use(expressValidator({
+	errorFormatter: function(param, msg, value) {
+		let namespace = param.split('.'),
+		root = namespace.shift(),
+		formParam = root;
+		while(namespace.lenght) {
+			formParam += '[' +namespace.shift() + ']';
+		}
+		return {
+			param : formParam,
+			msg : msg,
+			value : value
+		};
+	}
+}));
 
 // rota GET /categories
 app.get('/categories', (req, res) => {
@@ -47,20 +65,33 @@ app.get('/categories/:id', (req, res) => {
 
 // rota POST /categories
 app.post('/categories', (req, res) => {
-	let category = new Category(req.body);
 
-	category.save(function(err) {
-		if (err) {
-			res.send({
-				"ok" : false
-			});
-			return;
-		} else {
-			res.send({
-				"ok" : true
-			});
-		}
-	});
+	// checa por possiveis campos em branco
+	req.checkBody('id', 'IdRequired').notEmpty();
+	req.checkBody('name', 'NameRequired').notEmpty();
+	let errors = req.validationErrors();
+
+	// caso algum campo foi deixado em branco, aponta qual foi
+	if (errors) {
+		res.send({
+			"ok" : false,
+			"error" : errors
+		});
+
+	} else {
+		let category = new Category(req.body);
+		// let childrenId = req.body.childrenId;
+		Category.find({'id' : { $all : req.body.childrenId }}, function(errs, cat) {
+			res.send({ Category : cat });
+		});
+		category.save(function(err) {
+			if (err) {
+				res.send({ "ok" : false });
+			} else {
+				res.send({ "ok" : true });
+			}
+		});
+	}
 });
 
 // usado para debugar
