@@ -20,6 +20,7 @@
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
     "express-validator": "^5.1.2",
-    "mongoose": "^5.0.14"
+    "mongoose": "^5.0.14",
+    "mongoose-paginate": "^5.0.3"
   }
 }

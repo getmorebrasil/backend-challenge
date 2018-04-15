@@ -45,7 +45,7 @@ app.use(expressValidator({
 app.get('/categories', (req, res) => {
 
 	// retirando o _id e __v no json e ordenando as categorias por id fornecido
-	Category.find({}, { '_id' : 0, '__v' : 0 }).exec(function(err, categories) {
+	Category.find({}, { '_id' : 0, '__v' : 0 }).sort({ 'id' : 1 }).exec(function(err, categories) {
 		if (err) throw err;
 		res.send({ Categories : categories });
 	});
@@ -63,8 +63,8 @@ app.get('/categories/:id', (req, res) => {
 app.post('/categories', (req, res) => {
 
 	// checa se algum campo está em branco
-	req.body('id', 'IdRequired').notEmpty();
-	req.body('name', 'NameRequired').notEmpty();
+	req.checkBody('id', 'IdRequired').notEmpty();
+	req.checkBody('name', 'NameRequired').notEmpty();
 	let errors = req.validationErrors();
 
 	// caso possui algum campo em branco, aponta qual, 
@@ -77,7 +77,7 @@ app.post('/categories', (req, res) => {
 
 });
 
-// mostra quais campos estão invalidos
+// resposta de campos nao preenchidos e mostra quais sao
 function invalidField (res, errors) {
 	res.send({
 		"ok" : false,
@@ -87,33 +87,64 @@ function invalidField (res, errors) {
 
 // cria uma nova categoria e testa se ela possui childrenIds validos
 function newCategory (req, res) {
-	let category = new Category(req.body);
+	sameIdValidation(req, res)
+}
+
+// testa se o Id ja esta sendo utilizado por outra categoria
+function sameIdValidation(req, res) {
+
+	Category.find({ 'id' : req.body.id }, function(err, idCategory) {
+		if (err) throw err;
+
+		// testa se o objeto retornado pelo find eh diferente de 0
+		// e caso for, o id ja esta sendo utilizado e tera uma resposta
+		// de id invalido, caso contrario, sera verificado se os
+		// childrenIds sao validos.
+		if (Object.keys(idCategory).length !== 0) {
+			invalidIdResponse(res);
+		} else {
+			childrenIdValidation(req, res);
+		}
+	});
+}
+
+// procura no db uma lista com os childrenId passados e
+// compara o tamanho da lista encontrada no db com a quantidade de
+// childrenIds pasados, caso seja igual a categoria eh salva no db, 
+// caso contrario as categorias passadas são invalidas.
+function childrenIdValidation(req, res) {
 	let childrenId = req.body.childrenId;
 
-	// procura no db uma lista com os childrenId passados e
-	// compara o tamanho da lista encontrada no db com a quantidade de
-	// childrenIds pasados, caso seja igual a categoria eh salva no db, 
-	// caso contrario as categorias passadas são invalidas
 	Category.find({ 'id' : childrenId }, function(err, categories) {
 		if (err) throw err;
 		if (Object.keys(categories).length === childrenId.length) {
-			saveInDB(res, category);
+			saveInDB(req, res);
 		} else {
-			invalidCategories(res);
+			invalidCategoriesResponse(res);
 		}
 	});
 }
 
 // salva a nova categoria no database
-function saveInDB (res, category) {
+function saveInDB (req, res) {
+	let category = new Category(req.body);
+
 	category.save(function (err) {
 		if (err) throw err;
-		res.send({ "ok" : true });	
+		res.send({ "ok" : true });
 	});
 }
 
-// envia a mensagem de categoria invalida
-function invalidCategories (res) {
+// respota de Id ja sendo utilizado
+function invalidIdResponse (res) {
+	res.send({
+		"ok" : false,
+		"error" : "IdAlreadyBeingUsed"
+	});
+}
+
+// resposta de Categorias filhas invalida
+function invalidCategoriesResponse (res) {
 	res.send({ 
 		"ok" : false , 
 		"error" : "InvalidCategories"
