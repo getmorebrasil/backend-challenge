@@ -11,7 +11,7 @@ const db = mongoose.connection;
 
 // checa se ha algum erro no db
 db.on('error', (err) => {
-	console.log(err);
+	throw err;
 });
 
 // inicia app
@@ -21,7 +21,7 @@ const app = express();
 const Category = require('./model/category');
 
 // body parser middleware
-app.use(bodyParser.urlencoded({extended : false}));
+app.use(bodyParser.urlencoded( {extended : false} ));
 app.use(bodyParser.json());
 
 // express validator middleware
@@ -30,7 +30,7 @@ app.use(expressValidator({
 		let namespace = param.split('.'),
 		root = namespace.shift(),
 		formParam = root;
-		while(namespace.lenght) {
+		while(namespace.length) {
 			formParam += '[' +namespace.shift() + ']';
 		}
 		return {
@@ -43,19 +43,18 @@ app.use(expressValidator({
 
 // rota GET /categories
 app.get('/categories', (req, res) => {
-	// escondendo o _id no json e ordenando as categorias por id fornecido
-	Category.find({}, {'_id' : 0}).exec(function(err, categories) {
-		if (err) { 
-			console.log(err);
-		} else {
-			res.send({ Categories : categories });
-		}
+
+	// retirando o _id e __v no json e ordenando as categorias por id fornecido
+	Category.find({}, { '_id' : 0, '__v' : 0 }).exec(function(err, categories) {
+		if (err) throw err;
+		res.send({ Categories : categories });
 	});
 });
 
 // rota GET /categories/:id
 app.get('/categories/:id', (req, res) => {
-	Category.find({'id' : req.params.id}, {'_id' : 0}, function(err, category) {
+	Category.find({'id' : req.params.id}, { '_id' : 0, '__v' : 0 }, function(err, category) {
+		if (err) throw err;
 		res.send({ Category : category});
 	});
 });
@@ -63,43 +62,63 @@ app.get('/categories/:id', (req, res) => {
 // rota POST /categories
 app.post('/categories', (req, res) => {
 
-	// checa por possiveis campos em branco
-	req.checkBody('id', 'IdRequired').notEmpty();
-	req.checkBody('name', 'NameRequired').notEmpty();
+	// checa se algum campo está em branco
+	req.body('id', 'IdRequired').notEmpty();
+	req.body('name', 'NameRequired').notEmpty();
 	let errors = req.validationErrors();
 
-	// caso algum campo foi deixado em branco, aponta qual foi
+	// caso possui algum campo em branco, aponta qual, 
+	// caso contrario procede para salvar a nova categoria
 	if (errors) {
-		res.send({
-			"ok" : false,
-			"error" : errors
-		});
-
-	// caso nao tenha erro de validacao por campo requerido
+		invalidField(res, errors);
 	} else {
-		let category = new Category(req.body);
-
-		// procura no db uma lista com os childrenId passados
-		Category.find({'id' : req.body.childrenId }, function(err, cat) {
-
-			// compara o tamanho da lista de childrenId passados com o tamanho da lista encontrada
-			if (Object.keys(cat).length === req.body.childrenId.length) {
-				category.save(function(err) {
-					if (err) { 
-						res.send(err);
-					} else { 
-						res.send({ "ok" : true });	
-					}
-				});
-			} else {
-				res.send({ 
-					"ok" : false , 
-					"error" : "InvalidCategories"
-				});
-			}
-		});
+		 newCategory(req, res);
 	}
+
 });
+
+// mostra quais campos estão invalidos
+function invalidField (res, errors) {
+	res.send({
+		"ok" : false,
+		"error" : errors
+	});
+}
+
+// cria uma nova categoria e testa se ela possui childrenIds validos
+function newCategory (req, res) {
+	let category = new Category(req.body);
+	let childrenId = req.body.childrenId;
+
+	// procura no db uma lista com os childrenId passados e
+	// compara o tamanho da lista encontrada no db com a quantidade de
+	// childrenIds pasados, caso seja igual a categoria eh salva no db, 
+	// caso contrario as categorias passadas são invalidas
+	Category.find({ 'id' : childrenId }, function(err, categories) {
+		if (err) throw err;
+		if (Object.keys(categories).length === childrenId.length) {
+			saveInDB(res, category);
+		} else {
+			invalidCategories(res);
+		}
+	});
+}
+
+// salva a nova categoria no database
+function saveInDB (res, category) {
+	category.save(function (err) {
+		if (err) throw err;
+		res.send({ "ok" : true });	
+	});
+}
+
+// envia a mensagem de categoria invalida
+function invalidCategories (res) {
+	res.send({ 
+		"ok" : false , 
+		"error" : "InvalidCategories"
+	});
+}
 
 // usado para debugar
 app.listen(3000, () => {
