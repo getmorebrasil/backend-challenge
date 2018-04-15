@@ -45,13 +45,10 @@ app.use(expressValidator({
 app.get('/categories', (req, res) => {
 	// escondendo o _id no json e ordenando as categorias por id fornecido
 	Category.find({}, {'_id' : 0}).exec(function(err, categories) {
-		if (err) {
+		if (err) { 
 			console.log(err);
 		} else {
-			res.send({
-				Categories : categories
-			});
-				
+			res.send({ Categories : categories });
 		}
 	});
 });
@@ -78,17 +75,27 @@ app.post('/categories', (req, res) => {
 			"error" : errors
 		});
 
+	// caso nao tenha erro de validacao por campo requerido
 	} else {
 		let category = new Category(req.body);
-		// let childrenId = req.body.childrenId;
-		Category.find({'id' : { $all : req.body.childrenId }}, function(errs, cat) {
-			res.send({ Category : cat });
-		});
-		category.save(function(err) {
-			if (err) {
-				res.send({ "ok" : false });
+
+		// procura no db uma lista com os childrenId passados
+		Category.find({'id' : req.body.childrenId }, function(err, cat) {
+
+			// compara o tamanho da lista de childrenId passados com o tamanho da lista encontrada
+			if (Object.keys(cat).length === req.body.childrenId.length) {
+				category.save(function(err) {
+					if (err) { 
+						res.send(err);
+					} else { 
+						res.send({ "ok" : true });	
+					}
+				});
 			} else {
-				res.send({ "ok" : true });
+				res.send({ 
+					"ok" : false , 
+					"error" : "InvalidCategories"
+				});
 			}
 		});
 	}
