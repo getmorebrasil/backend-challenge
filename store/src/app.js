@@ -73,8 +73,8 @@ function paginateCategories(req, res) {
 
 // GET /categories/:id route, send the category with the specfic id
 app.get('/categories/:id', (req, res) => {
-	Category.find({'id' : req.params.id}, 
-		          { '_id' : 0, '__v' : 0 }, 
+	Category.find({ 'id' : req.params.id }, 
+		          { '__v' : 0 }, 
 		          function(err, category) {
 		if (err) throw err;
 
@@ -155,7 +155,7 @@ function saveNewCategory (req, res) {
 function responseIvalidId (res) {
 	res.send({
 		"ok" : false,
-		"error" : "IdAlreadyBeingUsed"
+		"error" : "InvalidId"
 	});
 }
 
@@ -166,6 +166,15 @@ function responseInvalidCategory (res) {
 		"error" : "InvalidCategories"
 	});
 }
+
+// remove a category from DB
+app.delete('/categories/:id', (req, res) => {
+	Category.remove({ 'id' : req.params.id }, function(err, removed) {
+		if (err) throw err;
+		
+		res.send({ "removed" : true });
+	});
+});
 
 // to use postman
 app.listen(3000, () => {
