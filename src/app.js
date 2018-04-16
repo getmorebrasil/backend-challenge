@@ -8,7 +8,7 @@ var app = express();
 app.use(bodyParser.json());
 
 app.get('/categories', function (req, res) {
-  var JsonRes = JSON.stringify(jsonFile, 1, 4);
+  var JsonRes = (jsonFile);
   res.send(JsonRes);
 });
 
@@ -17,7 +17,7 @@ app.get('/categories/:id',function(req,res,next) {
 	var wantedCategorie = jsonFile.categories.filter(function(category) {
 		return category.id == id;
 	});
-	res.send(wantedCategorie);
+	res.send(wantedCategorie,1,4);
 })
 
 app.post('/categories', function(req, res) {
@@ -34,7 +34,7 @@ app.post('/categories', function(req, res) {
 })
 
 app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+  console.log('listening on port 3000!');
 });
 
 
