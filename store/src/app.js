@@ -132,10 +132,10 @@ function childrenIdValidation(req, res) {
 	Category.find({ 'id' : childrenId }, function(err, categories) {
 		if (err) throw err;
 
-		if (Object.keys(categories).length !== childrenId.length) {
-			responseInvalidCategory(res);
-		} else {
+		if (Object.keys(categories).length === childrenId.length) {
 			saveNewCategory(req, res);
+		} else {
+			responseInvalidCategory(res);
 		}
 	});
 }
