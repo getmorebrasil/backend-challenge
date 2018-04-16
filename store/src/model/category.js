@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 
 const categorySchema = mongoose.Schema({
 	id : {
@@ -13,5 +14,7 @@ const categorySchema = mongoose.Schema({
 		type : [Number],
 	},
 });
+
+categorySchema.plugin(mongoosePaginate);
 
 const Category = module.exports = mongoose.model('Category', categorySchema);

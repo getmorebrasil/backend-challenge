@@ -2,11 +2,11 @@ const express = require('express');
 const expressValidator = require('express-validator');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate');
 
 // utilizando mongoose para estruturacao do database
 // sendo store o nome dado ao database criado
 mongoose.connect('mongodb://localhost/store');
-mongoose.Promise = global.Promise;
 const db = mongoose.connection;
 
 // checa se ha algum erro no db
@@ -44,16 +44,31 @@ app.use(expressValidator({
 // rota GET /categories
 app.get('/categories', (req, res) => {
 
-	// retirando o _id e __v no json e ordenando as categorias por id fornecido
-	Category.find({}, { '_id' : 0, '__v' : 0 }).sort({ 'id' : 1 }).exec(function(err, categories) {
-		if (err) throw err;
-		res.send({ Categories : categories });
-	});
+	if (Object.keys(req.query).length === 0) {
+		Category.find({}, { '__v' : 0 })
+				.sort({ 'id' : 1 })
+				.exec(function(err, categories) {
+			if (err) throw err;
+			res.send({ Categories : categories });
+		});
+
+	} else {
+		Category.paginate({}, { page : parseFloat(req.query.page), 
+								limit : parseFloat(req.query.limit),
+								sort : req.query.sort,
+								select : 'id name childrenId' })
+				.then(function(err, categories) {
+			if (err) throw err;
+			res.send({ Categories : categories });
+		});
+	}
 });
 
 // rota GET /categories/:id
 app.get('/categories/:id', (req, res) => {
-	Category.find({'id' : req.params.id}, { '_id' : 0, '__v' : 0 }, function(err, category) {
+	Category.find({'id' : req.params.id}, 
+		          { '_id' : 0, '__v' : 0 }, 
+		          function(err, category) {
 		if (err) throw err;
 		res.send({ Category : category});
 	});
