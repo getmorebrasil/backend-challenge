@@ -2,34 +2,52 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var fs = require('fs');
 
+var pg = require('pg');
+
+var conString = "postgres://postgres:postgres@localhost:5432/backendchallenge";
+var client = new pg.Client(conString);
+client.connect();
+
 var jsonFile = require("../data/jsonFile.json"); 
 
 var app = express();
 app.use(bodyParser.json());
 
 app.get('/categories', function (req, res) {
-  var JsonRes = (jsonFile);
-  res.send(JsonRes);
+  //var JsonRes = (jsonFile);
+ 
+  client.query("select (array_to_json(array_agg(row_to_json(arrayField)))) as categories from (select id_category, category_name from category) arrayField",function(err,result){
+  	if (err) {
+  		res.send(err.message);
+  	}  
+	else {
+		res.send(JSON.stringify(result.rows));
+	}  	
+  });
 });
 
 app.get('/categories/:id',function(req,res,next) {
 	var id = req.params.id;
-	var wantedCategorie = jsonFile.categories.filter(function(category) {
-		return category.id == id;
-	});
-	res.send(wantedCategorie,1,4);
+	client.query("select (array_to_json(array_agg(row_to_json(arrayField)))) as categories from (select id_category, category_name from category) arrayField WHERE id_category = "+id+"",function(err,result){
+  	if (err) {
+  		res.send(err.message);
+  	}  
+	else {
+		res.send(JSON.stringify(result.rows));
+	}  	
+  });
 })
 
 app.post('/categories', function(req, res) {
-	if (checkChildrenId(req.body.childrenIds)) {
-		var addedCategory = {"id":getNextId(), name:(req.body.name) ,childrenIds: req.body.childrenIds };//Generate a new category
-		jsonFile.categories.push(addedCategory);
-		fs.writeFile("../data/jsonFile.json",JSON.stringify(jsonFile));
+	if(checkChildrenId(req)) {
+		client.query("insert into category(category_name) values('"+req.body.name+"')");
+		req.body.childrenIds.forEach(insertAssoc);
 		res.send({"ok":true});
 	} else {
-		res.send({"ok":false,"error":"invalid Children"});
+		res.send({"ok":true,"error":"invalid Children"});
 	}
-	
+
+	//console.log("insert into category(category_name,father_id) values('"+req.body.name+"',"+idFather+")")
 	
 })
 
@@ -49,23 +67,32 @@ function getNextId() {
 	
 }
 
-function checkChildrenId(addedCategory){
-	//var childrenArray = addedCategory.childrenIds;
-	if (addedCategory.length == 0) {
-		return true;
-	} else {
-		var childrenExists = true;
-		var wantedChildren;
-		for (var i = 0; i < addedCategory.length; i++) {
-			wantedChildren = jsonFile.categories.filter(function(category) {
-				return category.id == addedCategory[i];
-			});
-			if (wantedChildren.length == 0) {
-				return false;
-			}
-		}
+function checkChildrenId(requisition){
+	var ids ="";
+	var arrayChildrenIds = requisition.body.childrenIds;
+	for (var i = 0; i < arrayChildrenIds.length-1; i++) {
+		ids = ids.concat(arrayChildrenIds[i]+",");
 	}
-	return true;
-}
+	ids = ids.concat(arrayChildrenIds[arrayChildrenIds.length-1]);
+
+	var checkChildrenId = client.query("SELECT COUNT(*) FROM category WHERE id_category in ("+ids+")",function(err,result){
+		if (err) {
+			console.log(err.message);
+		} else {
+			var checkIdChildren = parseInt(result.rows[0].count);
+			console.log(arrayChildrenIds.length == checkIdChildren);
+			return (arrayChildrenIds.length == checkIdChildren);
+		}
+	});
+}	
 		
-		
+function insertAssoc(item) {
+	
+	try {
+		client.query("insert into father_children_assoc(id_father,id_child) values((select max(id_category) from category),"+item+")");
+	}
+	catch(err) {
+		console.log('err.message')
+	}
+
+}	
