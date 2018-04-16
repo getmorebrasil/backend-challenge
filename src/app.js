@@ -68,3 +68,4 @@ function checkChildrenId(addedCategory){
 	return true;
 }
 		
+		
