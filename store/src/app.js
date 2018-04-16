@@ -6,12 +6,7 @@ const mongoosePaginate = require('mongoose-paginate');
 
 // initializing mongoose
 mongoose.connect('mongodb://localhost/store');
-const db = mongoose.connection;
-
-// check for a error in the database
-db.on('error', (err) => {
-	throw err;
-});
+mongoose.Promise = global.Promise;
 
 // initialize the app
 const app = express();
@@ -53,8 +48,7 @@ app.get('/categories', (req, res) => {
 function sendCategories(req, res) {
 	Category.find({}, { '__v' : 0 })
 			.sort({ 'id' : 1 })
-			.exec(function(err, categories) {
-		if (err) throw err;
+			.then(function(categories) {
 
 		res.send({ Categories : categories });
 	});
@@ -74,11 +68,10 @@ function paginateCategories(req, res) {
 // GET /categories/:id route, send the category with the specfic id
 app.get('/categories/:id', (req, res) => {
 	Category.find({ 'id' : req.params.id }, 
-		          { '__v' : 0 }, 
-		          function(err, category) {
-		if (err) throw err;
+		          { '__v' : 0 }) 
+		          .then(function(category) {
 
-		res.send({ Category : category});
+		res.send(category);
 	});
 });
 
@@ -114,13 +107,12 @@ function createNewCategory (req, res) {
 // test if the id already exist
 function idValidation(req, res) {
 
-	Category.find({ 'id' : req.body.id }, function(err, idCategory) {
-		if (err) throw err;
+	Category.find({ 'id' : req.body.id }).then(function(idCategory) {
 
-		if (Object.keys(idCategory).length !== 0) {
-			responseIvalidId(res);
-		} else {
+		if (Object.keys(idCategory).length === 0) {
 			childrenIdValidation(req, res);
+		} else {
+			responseIvalidId(res);
 		}
 	});
 }
@@ -129,10 +121,9 @@ function idValidation(req, res) {
 function childrenIdValidation(req, res) {
 	let childrenId = req.body.childrenId;
 
-	Category.find({ 'id' : childrenId }, function(err, categories) {
-		if (err) throw err;
+	Category.find({ 'id' : childrenId }).then(function(categories) {
 
-		if (Object.keys(categories).length === childrenId.length) {
+		if (Object.keys(categories).length === Object.keys(childrenId).length) {
 			saveNewCategory(req, res);
 		} else {
 			responseInvalidCategory(res);
@@ -144,8 +135,7 @@ function childrenIdValidation(req, res) {
 function saveNewCategory (req, res) {
 	let category = new Category(req.body);
 
-	category.save(function (err) {
-		if (err) throw err;
+	category.save().then(function() {
 
 		res.send({ "ok" : true });
 	});
@@ -169,8 +159,7 @@ function responseInvalidCategory (res) {
 
 // remove a category from DB
 app.delete('/categories/:id', (req, res) => {
-	Category.remove({ 'id' : req.params.id }, function(err, removed) {
-		if (err) throw err;
+	Category.remove({ 'id' : req.params.id }).then(function(removed) {
 
 		res.send({ "removed" : true });
 	});
