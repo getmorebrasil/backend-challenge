@@ -171,12 +171,14 @@ function responseInvalidCategory (res) {
 app.delete('/categories/:id', (req, res) => {
 	Category.remove({ 'id' : req.params.id }, function(err, removed) {
 		if (err) throw err;
-		
+
 		res.send({ "removed" : true });
 	});
 });
 
 // to use postman
-app.listen(3000, () => {
+let server = app.listen(3000, () => {
 	console.log('Server started in port 3000...');
 });
+
+module.exports = server;
