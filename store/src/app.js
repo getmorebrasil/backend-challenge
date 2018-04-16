@@ -43,26 +43,31 @@ app.use(expressValidator({
 
 // rota GET /categories
 app.get('/categories', (req, res) => {
-
 	if (Object.keys(req.query).length === 0) {
-		Category.find({}, { '__v' : 0 })
-				.sort({ 'id' : 1 })
-				.exec(function(err, categories) {
-			if (err) throw err;
-			res.send({ Categories : categories });
-		});
-
+		sendCategories(req, res);
 	} else {
-		Category.paginate({}, { page : parseFloat(req.query.page), 
-								limit : parseFloat(req.query.limit),
-								sort : req.query.sort,
-								select : 'id name childrenId' })
-				.then(function(err, categories) {
-			if (err) throw err;
-			res.send({ Categories : categories });
-		});
+		paginateCategories(req, res);
 	}
 });
+
+function sendCategories(req, res) {
+	Category.find({}, { '__v' : 0 })
+			.sort({ 'id' : 1 })
+			.exec(function(err, categories) {
+		if (err) throw err;
+		res.send({ Categories : categories });
+	});
+}
+
+function paginateCategories(req, res) {
+	Category.paginate({}, { page : parseFloat(req.query.page), 
+							limit : parseFloat(req.query.limit),
+							sort : req.query.sort,
+							select : 'id name childrenId' })
+			.then(function(categories) {
+		res.send({ Categories : categories });
+	});
+}
 
 // rota GET /categories/:id
 app.get('/categories/:id', (req, res) => {
