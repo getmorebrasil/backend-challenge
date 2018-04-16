@@ -28,4 +28,4 @@ function post(categoryName, childrenArray) {
 	);
 }
 
-//call teste function here
+//call test function here
