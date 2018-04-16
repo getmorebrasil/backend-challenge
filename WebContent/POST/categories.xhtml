@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<f:metadata>
+	<f:viewParam name="id" value="#{id}" />
+</f:metadata>
+
+<h:head>
+	<title>Rota POST</title>
+</h:head>
+<h:body>
+	<f:view>
+		<h:form>
+			Id: <br /> <h:inputText value="#{postBean.id}"></h:inputText> <br />
+			Nome: <br /> <h:inputText value="#{postBean.name}"></h:inputText> <br />
+			ChildrenIds: <br /> <h:inputText value="#{postBean.childrenIds}"></h:inputText> Ex: 200, 201 <br />
+
+			<h:commandButton value="Post" action="#{postBean.post()}">
+				<br />
+				<h:outputText value="#{postBean.resposta}" />
+			</h:commandButton>
+		</h:form>
+	</f:view>
+</h:body>
+</html>

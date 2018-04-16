@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<f:metadata>
+	<f:viewParam name="id" value="#{id}" />
+</f:metadata>
+
+<h:head>
+	<title>Rota GET</title>
+</h:head>
+<h:body>
+	<center><h3>Categorias</h3></center> 
+	<hr></hr>
+	<f:view>
+		<ui:repeat value="#{getBean.getCategories(id)}" var="category">
+			Id: <h:outputText value="#{category.id}" /> <br/>
+			Name: <h:outputText value="#{category.name}" /> <br/>
+			Children Ids: <h:outputText value="#{category.childrenIds}" /> <br/> 
+			<hr></hr>
+		</ui:repeat>
+	  	#{getBean.htmlError}
+	</f:view>
+</h:body>
+</html>
