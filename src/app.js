@@ -1,79 +1,107 @@
-var express = require('express')
-var bodyParser = require('body-parser')
-var fs = require('fs')
-var pg = require('pg')
+let express = require('express')
+let Sequelize = require('sequelize')
+let bodyParser = require('body-parser')
 
-var conString = 'postgres://postgres:postgres@localhost:5432/backendchallenge'
-var client = new pg.Client(conString)
-client.connect()
+var sqlite = require('sqlite-sync');
+sqlite.connect('./db.sqlite3');
 
-var app = express()
+let app = express()
 app.use(bodyParser.json())
 
+const sequelize = new Sequelize('db', null, null, {
+  dialect: 'sqlite',
+  storage: './db.sqlite3'
+})
+
+const Category = sequelize.define('category', {
+  id: {
+  	type: Sequelize.INTEGER,
+    primaryKey: true
+  },
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false
+  }
+})
+
+sequelize.sync()
+
+Category.hasOne(Category, {foreignKey: 'parentId'})
+
+app.use(bodyParser.json())
+
+app.listen(3000)
+
 app.get('/categories', function (req, res) {
-  var queryString = 'SELECT (to_json(array_agg((arrayField)))) AS categories FROM (SELECT name, ARRAY(SELECT id_child FROM father_children_assoc WHERE id_father = category.id ) as "childrenIds" from category) arrayField'
-  client.query(queryString, function (err, result) {
-  	if (err) {
-  		res.send(err.message)
-    } else {
-      // res.send(JSON.stringify(result));
-      res.send(result.rows)
-    }
-  })
+  	
+//,[sequelize.fn('COUNT', sequelize.col('id')), 'nums']]
+  	Category.findAll({
+  		attributes: ['id', 'name']
+
+  	}).then(function (categories) {
+  		res.send(categories)
+  	})
 })
 
 app.get('/categories/:id', function (req, res) {
-  var id = req.params.id
-  var queryString = 'SELECT (array_to_json(array_agg(row_to_json(arrayField)))) AS categories FROM (SELECT name, ARRAY(SELECT id_child FROM father_children_assoc WHERE id_father = category.id ) as childrenIds from category where id = ' + id + ') arrayField'
-  client.query(queryString, function (err, result) {
-  	if (err) {
-  		res.send(err.message)
-  	} else {
-      res.send(JSON.stringify(result.rows))
-    }
-  })
+  	
+//,[sequelize.fn('COUNT', sequelize.col('id')), 'nums']]
+  	Category.findAll({
+  		attributes: ['id', 'name'],
+  		where: {
+    	Id: req.params.id
+  		}
+  	}).then(function (categories) {
+  		res.send(categories)
+  	})
 })
 
-app.post('/categories', function (req, res) {
-  checkChildrenId(req, function (result) {
-    console.log(result)
-    if (result) {
-      client.query("insert into category(name) values('" + req.body.name + "')")
-      req.body.childrenIds.forEach(insertAssoc)
-      console.log('Adicionou: ' + req.body.name)
-      res.send({'ok': true})
-    } else {
-      res.send({'ok': false, 'error': 'invalid Children'})
-    }
-  })
+app.post('/categories', function(req, res) {
+	checkChildrenId(req, function(result) {
+		console.log(result);
+		if (result) {
+			Category.create({
+			    id: req.body.id,
+			    name: req.body.name,
+			    parentId: null
+			  }).then(category => {
+			  	req.body.childrenId.forEach((item) => updateTable(item, req.body.id))
+			    res.send({'ok': true})
+			  })
+		} else {
+			res.send({"ok":false,"error":"invalid Children"});
+		}
+	});
+});
+
+
+app.get('/', function (req, res) {
+	var rows = sqlite.run("SELECT id FROM categories WHERE id in(1,2,3,4)");
+	// console.log(rows);
+	// let chosen = Array(rows); 
+	res.send({"a":rows.length});
 })
 
-app.listen(3000, function () {
-  console.log('listening on port 3000!')
-})
-
-function checkChildrenId (requisition, callback) {
-  var ids = 0
-  var arrayChildrenIds = requisition.body.childrenIds
-  var queryString = "SELECT COUNT(*) FROM category WHERE id = ANY('{" + arrayChildrenIds + "}')"
-
-  client.query(queryString, function (err, result) {
-    if (err) {
-      console.log('Error: ' + err.message)
-    } else if (arrayChildrenIds.length == 0) {
-      console.log('else if: ' + arrayChildrenIds.length + ' / ' + result.rows[0].count)
-      return callback(true)
-    } else {
-      console.log('else : ' + arrayChildrenIds.length + ' / ' + result.rows[0].count)
-      return callback(arrayChildrenIds.length == result.rows[0].count)
-    }
-  })
+function checkChildrenId(requisition, callback){
+	let ids = 0;
+	let arrayChildrenIds = requisition.body.childrenId;
+	var rows = sqlite.run("SELECT id FROM categories WHERE id in("+arrayChildrenIds+")");
+		
+		if(arrayChildrenIds.length == 0) {
+			console.log("else if: " + arrayChildrenIds.length+" / " + rows.length);
+			return callback(true);
+		} else {
+			console.log("else : " + arrayChildrenIds.length+" / " + rows.length);
+			return callback(arrayChildrenIds.length == rows.length);
+		}
 }
 
-function insertAssoc (item) {
-  try {
-    client.query('insert into father_children_assoc(id_father,id_child) values((select max(id) from category),' + item + ')')
-  } catch (err) {
-    console.log('err.message')
-  }
+function updateTable(item,idParent) {
+	Category.update({ parentId: idParent },
+	{
+  		where: {
+  			id: item
+  		}
+  	});
+  	
 }
