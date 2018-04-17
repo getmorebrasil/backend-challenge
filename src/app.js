@@ -12,19 +12,21 @@ var app = express();
 app.use(bodyParser.json());
 
 app.get('/categories', function (req, res) {
-  client.query("SELECT (array_to_json(array_agg(row_to_json(arrayField)))) AS categories FROM (SELECT name, ARRAY(SELECT id_child FROM father_children_assoc WHERE id_father = category.id ) as \"childrenIds\" from category) arrayField",function(err,result){
+  var queryString = "SELECT (to_json(array_agg((arrayField)))) AS categories FROM (SELECT name, ARRAY(SELECT id_child FROM father_children_assoc WHERE id_father = category.id ) as \"childrenIds\" from category) arrayField";
+  client.query(queryString,function(err,result){
   	if (err) {
   		res.send(err.message);
-  	}  
-	else {
-		res.send(JSON.stringify(result.rows));
-	}  	
+	} else {
+		//res.send(JSON.stringify(result));
+		res.send(result.rows);
+	}
   });
 });
 
 app.get('/categories/:id',function(req,res,next) {
 	var id = req.params.id;
-	client.query("select (array_to_json(array_agg(row_to_json(arrayField)))) as categories from (select id, name from category) arrayField WHERE id = "+id+"",function(err,result){
+	var queryString = "SELECT (array_to_json(array_agg(row_to_json(arrayField)))) AS categories FROM (SELECT name, ARRAY(SELECT id_child FROM father_children_assoc WHERE id_father = category.id ) as childrenIds from category where id = "+id+") arrayField";
+	client.query(queryString,function(err,result){
   	if (err) {
   		res.send(err.message);
   	}  
