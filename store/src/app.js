@@ -88,7 +88,6 @@ app.post('/categories', (req, res) => {
 	} else {		
 		 createNewCategory(req, res);
 	}
-
 });
 
 // response of which field is invalid
