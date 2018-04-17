@@ -1,34 +1,33 @@
-var request = require('request');
+var request = require('request')
 
-function getCategories() {
-	request('http://localhost:3000/categories', function (error, response, body) {
-	  console.log('error:', error); // Print the error if one occurred
-	  console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-	  console.log('body:', body); // Print the HTML for the Google homepage.
-	});
+function getCategories () {
+  request('http://localhost:3000/categories', function (error, response, body) {
+	  console.log('error:', error) // Print the error if one occurred
+	  console.log('statusCode:', response && response.statusCode) // Print the response status code if a response was received
+	  console.log('body:', body) // Print the HTML for the Google homepage.
+  })
 }
 
-function getCategoryById(id) {
-	request(('http://localhost:3000/categories/'+id), function (error, response, body) {
-	  console.log('error:', error); // Print the error if one occurred
-	  console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-	  console.log('body:', body); // Print the HTML for the Google homepage.
-	});
+function getCategoryById (id) {
+  request(('http://localhost:3000/categories/' + id), function (error, response, body) {
+	  console.log('error:', error) // Print the error if one occurred
+	  console.log('statusCode:', response && response.statusCode) // Print the response status code if a response was received
+	  console.log('body:', body) // Print the HTML for the Google homepage.
+  })
 }
 
-function post(categoryName, childrenArray) {
-	request.post(
+function post (categoryIds, categoryName, CategoryChildrenId) {
+  request.post(
 	    'http://localhost:3000/categories',
-	    { json: { name: categoryName ,childrenIds: childrenArray } },
+	    { json: {id: categoryIds, name: categoryName, childrenId: CategoryChildrenId } },
 	    function (error, response, body) {
-	    	console.log('error:', error); // Print the error if one occurred
-	  		console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-	  		console.log('body:', body); // Print the HTML for the Google homepage.
+	    	console.log('error:', error) // Print the error if one occurred
+	  		console.log('statusCode:', response && response.statusCode) // Print the response status code if a response was received
+	  		console.log('body:', body) // Print the HTML for the Google homepage.
 	    }
-	);
+  )
 }
 
-//call test function here
+// call test function here
 
-
-
+post(2, 'atalaia', [21])
