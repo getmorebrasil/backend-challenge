@@ -1,0 +1,23 @@
+{
+  "name": "backend-challenge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --timeout 10000"
+  },
+  "author": "Lucas Herrera",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "chai-http": "^4.0.0",
+    "express": "^4.16.3",
+    "knex": "^0.14.6",
+    "path": "^0.12.7",
+    "pg": "^7.4.1"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.1.0"
+  }
+}
