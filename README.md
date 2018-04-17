@@ -1,5 +1,14 @@
 # Desafio backend
- 
+## Solução abordada
+A solução realizada se utiliza de Node.js juntamente com Express para implementação, e para a persistencias de dados foi utilizado o MongoDB, sendo necessário o mesmo para a aplicação rodar. Em adição foram utilizados dois modulos, o Express-Validator para checar se os campos foram preenchidos e o Body-Parser para tratar a requisição de dados.
+
+Para criação do modelo para o MongoDB foi utilizado Mongoose e para a paginação Mongoose-paginate.
+
+A solução também possui testes integrados que foram rodados utilizando Mocha, Chai e Supertest, sendo estes necessários para roda-los.
+
+Além das rotas requisitadas, foi adicionada uma rota DELETE /categories/:id para ajudar a realizar os testes e também foi incluído uma verificação de ID, para impedir que fosse criado uma categoria com o mesmo ID.
+
+## Desafio Proposto
 Você deve desenvolver uma API HTTP para registro e obtenção de categorias.
 
 As categorias formam uma árvore, onde cada categoria aponta para seu pai.
