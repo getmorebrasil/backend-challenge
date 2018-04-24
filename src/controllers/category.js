@@ -2,7 +2,7 @@ const db  = require('../database');
 const url = require('url');
 
 exports.getAllCategories = (req, res) => {
-	var query = url.parse(req.url, true).query;
+	const query = url.parse(req.url, true).query;
 
 	if(query.limit && query.page)
 		return paginateCategories(res, query.limit, query.page);
@@ -18,7 +18,8 @@ exports.getAllCategories = (req, res) => {
 };
 
 exports.deleteCategoryById = (req, res) => {
-	var id = parseInt(req.params.id);
+	const id = parseInt(req.params.id);
+	
 	if(!isValidId(id))
 		return sendError(res, "inputted id must be an integer less than 5000");
 
@@ -36,7 +37,7 @@ exports.deleteCategoryById = (req, res) => {
 };
 
 exports.getCategoryById = (req, res) => {
-	var id = parseInt(req.params.id);
+	const id = parseInt(req.params.id);
 
 	if(!isValidId(id))
 		return sendError(res, "inputted id must be an integer less than 5000");
@@ -55,7 +56,7 @@ exports.getCategoryById = (req, res) => {
 };
 
 exports.createCategory = (req, res) => {
-	var { name, childrenids } = req.body;
+	const { name, childrenids } = req.body;
 
 	if (!checkType(name, "string") || !Array.isArray(childrenids)) {
 		return sendError(res, "type mismatch");
@@ -83,13 +84,13 @@ exports.createCategory = (req, res) => {
 
 	function insertInDB() {
 		db.insert({ name: name, childrenids: childrenids }).into('category')
-		.then(data => {
-			return res.status(201).json( {ok: true });
-		})
-		.catch(err => {
-			console.log(err);
-			return res.status(500).end();
-		});
+			.then(data => {
+				return res.status(201).json( {ok: true });
+			})
+			.catch(err => {
+				console.log(err);
+				return res.status(500).end();
+			});
 	}
 
 };
