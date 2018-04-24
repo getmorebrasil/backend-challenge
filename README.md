@@ -1,4 +1,17 @@
-# Desafio backend
+## Solução
+O corpo do aplicativo é estruturado em node.js, divido em rotas (implementadas com express) e os controladores (funções específicas pertinentes ao que foi solicitado no escopo do desafio)
+
+A validação de dados se deu de maneira manual, sem a utilização de módulos auxiliares
+
+O módulo knex foi usado para integrar PostgreSQL à api e assegurar a persistência dos dados, as configurações de conexão à database podem ser configurados atráves de variáveis de ambiente em _"src/database/index.js"_
+ 
+Os testes unitários integrados foram implementados através do mocha, chai (& chai-http), com um script declarado no package.json iniciando-os
+
+Entre as implementações adicionais estão os método para paginação e deletar uma categoria dado um ID
+
+---
+
+## Desafio
  
 Você deve desenvolver uma API HTTP para registro e obtenção de categorias.
 
