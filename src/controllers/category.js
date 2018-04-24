@@ -94,25 +94,7 @@ exports.createCategory = (req, res) => {
 
 };
 
-sendError = (res, msg) => {
-	res.status(400).json( {ok: false, error: msg } );
-};
-
-isValidId = (id) => {
-	if(Number.isInteger(id) && id < 5000)
-		return true;
-	else
-		return false;
-};
-
-checkType = (object, type) => {
-	if(typeof object === type)
-		return true;
-	else
-		return false;
-};
-
-paginateCategories = (res, limit, page) => {
+exports.paginateCategories = (res, limit, page) => {
 	db.select().from('category').limit(limit).offset( limit * (page - 1) )
 		.then(data => {
 			res.status(200).json(data);
@@ -121,4 +103,22 @@ paginateCategories = (res, limit, page) => {
 			console.log(err);
 			res.status(500).end();
 		});
+};
+
+const sendError = (res, msg) => {
+	res.status(400).json( {ok: false, error: msg } );
+};
+
+const isValidId = (id) => {
+	if(Number.isInteger(id) && id < 5000)
+		return true;
+	else
+		return false;
+};
+
+const checkType = (object, type) => {
+	if(typeof object === type)
+		return true;
+	else
+		return false;
 };
