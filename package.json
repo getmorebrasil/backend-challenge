@@ -1,0 +1,12 @@
+{
+  "name": "backend-challenge",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/losoliveirasilva/backend-challenge.git",
+  "author": "Leonardo de Oliveira da Silva <los.oliveirasilva@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^2.5.1",
+    "mongorito": "^3.0.4"
+  }
+}
