@@ -9,7 +9,7 @@ router.post('/', async function(ctx, next) {
 	const {id, name, childrenIds} = ctx.request.body
 
 	const category = new Category({
-		id, name, childrenIds
+		id: +id, name, childrenIds: JSON.parse(childrenIds)
 	})
 
 	try {
@@ -21,3 +21,12 @@ router.post('/', async function(ctx, next) {
 		ctx.status = 400
 	}
 })
+
+router.get('/', async function(ctx, next) {
+	const categories = await Category.find()
+	
+	ctx.body = categories
+	status = 200
+})
+
+module.exports = router
