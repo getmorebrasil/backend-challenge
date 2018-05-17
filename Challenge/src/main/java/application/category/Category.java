@@ -2,23 +2,21 @@ package application.category;
 
 import java.util.ArrayList;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+
+import application.category.constraint.CategoryConstraint;
+import application.category.constraint.IdConstraint;
+import application.category.constraint.NameConstraint;
 
 @Entity
+@CategoryConstraint
 public class Category {
-
+	@IdConstraint
 	@Id
-	@Column(unique = true)
     private long id;
-	
-	@NotNull()
-	@NotEmpty()
+	@NameConstraint
     private String name;
-	
     private ArrayList<Long> childrenIds;	
 
     public Category() {

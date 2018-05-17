@@ -49,9 +49,8 @@ public class CategoryController {
     }
     
     @RequestMapping(value="/", method=RequestMethod.POST)
-    public ResponseEntity<Category> post(@RequestBody Category category) {
+    public ResponseEntity<Category> post(@Valid @RequestBody Category category) {
     	repository.save(category);
-    	
     	return new ResponseEntity<Category>(category, HttpStatus.OK);
     }
 }
