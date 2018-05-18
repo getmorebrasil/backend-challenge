@@ -18,6 +18,7 @@ import application.ServiceUtils;
 import application.category.Category;
 import application.category.CategoryRepository;
 
+//Constraint for Category(Children ids)
 @Documented
 @Constraint(validatedBy = CategoryConstraintValidator.class)
 @Target( { ElementType.TYPE})
@@ -28,15 +29,18 @@ public @interface CategoryConstraint {
     Class<? extends Payload>[] payload() default {};
 }
 
+//Validator for the Category(Children ids)
 class CategoryConstraintValidator implements ConstraintValidator<CategoryConstraint, Category> {
 	@Autowired
 	private CategoryRepository repository;
 	
+	//Initializes the validator and get the Category Repository for SQL Query
     @Override
     public void initialize(CategoryConstraint categoryConstraint) {
   	  	repository = ServiceUtils.getCategoryRepository();
     }
 
+    //Validates that the children ids exists and that the Category ain't parent of itself
     @Override
     public boolean isValid(Category categoryField, ConstraintValidatorContext cxt) {
     	ArrayList<Long> childrenIds = categoryField.getChildrenIds();

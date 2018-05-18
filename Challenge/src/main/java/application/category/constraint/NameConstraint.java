@@ -11,6 +11,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import javax.validation.Payload;
 
+//Constraint for Category's name
 @Documented
 @Constraint(validatedBy = NameConstraintValidator.class)
 @Target( { ElementType.METHOD, ElementType.FIELD })
@@ -21,11 +22,16 @@ public @interface NameConstraint {
     Class<? extends Payload>[] payload() default {};
 }
 
+//Validator for the Category's name
 class NameConstraintValidator  implements ConstraintValidator<NameConstraint, String> {
     @Override
     public void initialize(NameConstraint nameConstraint) {
     }
 
+    /*Validates that the name is:
+     * - Not empty;
+     * - Not null.
+     * */
     @Override
     public boolean isValid(String nameField, ConstraintValidatorContext cxt) {
     	return !nameField.isEmpty() && nameField != null;

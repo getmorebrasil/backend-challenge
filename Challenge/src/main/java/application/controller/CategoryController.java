@@ -21,6 +21,7 @@ public class CategoryController {
 	@Autowired
     private CategoryRepository repository;
     
+	//Method for the GET request with parameters(id), returns just the specified category from the database
 	@RequestMapping(value="/categories/{id}", method=RequestMethod.GET)
     public ResponseEntity<ArrayList<Category>> getCategory(@PathVariable(value = "id", required=false) Long id) {
     	final ArrayList<Category> categories = new ArrayList<>();
@@ -32,7 +33,8 @@ public class CategoryController {
     	
     	return new ResponseEntity<ArrayList<Category>>(categories, HttpStatus.OK);
     }
-    
+	
+	//Method for the GET request without any parameters, returns all the categories from the database
 	@RequestMapping(value="/categories", method=RequestMethod.GET)
     public ResponseEntity<ArrayList<Category>> getAllCategories() {
     	ArrayList<Category> categories = new ArrayList<>();
@@ -44,6 +46,9 @@ public class CategoryController {
     	return new ResponseEntity<ArrayList<Category>>(categories, HttpStatus.OK);
     }
     
+	/*Method for the POST request, gets a JSON with attributes of a category from the Body as parameter
+	 * The @Valid annotation validates that the category's attributes are valid
+	 */
     @RequestMapping(value="/categories", method=RequestMethod.POST)
     public ResponseEntity<Category> post(@Valid @RequestBody Category category) {
     	repository.save(category);

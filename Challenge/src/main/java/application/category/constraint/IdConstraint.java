@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import application.ServiceUtils;
 import application.category.CategoryRepository;
 
+//Constraint for Category's id
 @Documented
 @Constraint(validatedBy = IdConstraintValidator.class)
 @Target( { ElementType.METHOD, ElementType.FIELD })
@@ -26,15 +27,21 @@ public @interface IdConstraint {
     Class<? extends Payload>[] payload() default {};
 }
 
+//Validator for the Category's id
 class IdConstraintValidator implements ConstraintValidator<IdConstraint, Long> {
 	@Autowired
 	private CategoryRepository repository;
 	
+	//Initializes the validator and get the Category Repository for SQL Query
     @Override
     public void initialize(IdConstraint idConstraint) {
     	  repository = ServiceUtils.getCategoryRepository();
     }
-
+    /*Validates that the id is:
+     * - Not null;
+     * - Numeric;
+     * - There is no Category with the same id contained in the database.
+     */
     @Override
     public boolean isValid(Long idField, ConstraintValidatorContext cxt) {
     	return idField != null && idField.toString().matches("[0-9]*") && !(repository.findById(idField).isPresent());
