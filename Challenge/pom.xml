@@ -34,7 +34,7 @@
    			<artifactId>spring-boot-starter-web</artifactId>
    			<scope>provided</scope>
 		</dependency>
-        
+
         <!-- JPA Data (We are going to use Repositories, Entities, Hibernate, etc...) -->
 
         <dependency>
@@ -54,7 +54,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        
     </dependencies>
 
 
