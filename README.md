@@ -24,7 +24,7 @@ No campo ```spring.datasource.url``` coloque ```=jdbc:mysql://localhost:<porta d
 
 Nos campos ```spring.datasource.username``` e ```spring.datasource.password``` coloque o **usuário** e **senha** do banco.
 
-### 2. Inicie o *Tomcat* e abra o *Prompt de Comando* e faça o seguinte.
+### 2. Abra o *Prompt de Comando* e faça o seguinte.
 
 * Dê cd até a pasta "~/Challenge/"
 
@@ -34,7 +34,7 @@ Nos campos ```spring.datasource.username``` e ```spring.datasource.password``` c
 
 * Abra o Restlet Client Tester e em METHOD escolha *POST*
 
-* Na URL coloque ```http://localhost:{porta do Tomcat}/categories```
+* Na URL coloque ```http://localhost:8080/categories```
 
 * No campo Body digite o texto no formato JSON como abaixo
 ```json
@@ -55,13 +55,13 @@ Nos campos ```spring.datasource.username``` e ```spring.datasource.password``` c
 
 ##### Caso esteja usando o Restlet Client: 
 
-* Em METHOD escolha *GET* e na URL coloque ```http://localhost:{porta do Tomcat}/categories```
+* Em METHOD escolha *GET* e na URL coloque ```http://localhost:8080/categories```
 
 * Aperte *Send*
 
 ##### Caso esteja usando o próprio navegador:
 
-* Na URL coloque ```http://localhost:{porta do Tomcat}/categories``` e dê enter
+* Na URL coloque ```http://localhost:8080/categories``` e dê enter
 
 O resultado deverá ser da seguinte forma.
 
@@ -85,7 +85,7 @@ O resultado deverá ser da seguinte forma.
 
 * Faça o mesmo que na rota sem parâmetros porém na URL coloque:
 
-```http://localhost:{porta do Tomcat}/categories/{id}```
+```http://localhost:8080/categories/{id}```
 
 Exemplo: ```http://localhost:8080/categories/3```
 
