@@ -26,7 +26,18 @@ router.get('/', async function(ctx, next) {
 	const categories = await Category.find()
 	
 	ctx.body = categories
-	status = 200
+	ctx.status = 200
+})
+
+router.param('id', async function(id, ctx, next) {
+	ctx.category = await Category.find({id: +id})
+	if (!ctx.category) return ctx.status = 404
+	return next()
+})
+
+router.get('/:id', async function(ctx, next) {
+	ctx.body = ctx.category
+	ctx.status = 200
 })
 
 module.exports = router
