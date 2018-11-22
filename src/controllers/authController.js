@@ -13,7 +13,7 @@ router.post('/', async (req, res) => {
 
     try {
 
-        // Checking if Id of category already exists
+        // Verifica se o Id da nova categoria já existe
         if (await Category.findOne({ id })) {
             return res.status(400).send({
                 'ok': false,
