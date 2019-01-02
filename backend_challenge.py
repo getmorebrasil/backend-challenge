@@ -1,17 +1,29 @@
 from flask import Flask
 from flask import jsonify
 from flask import json
+from flask import request
 
 app = Flask(__name__)
+data = []
 
 @app.route("/")
 def hello():
     return "Welcome to the technical test"
 
-@app.route("/categories")
+@app.route("/categories", methods=['POST', 'GET'])
 def getCategories():
-	data = jsonify(categories())
-	return data
+	print(request.method)
+	if request.method == 'GET':
+		data = jsonify(categories())
+		#print (data)
+		return data
+	if request.method == 'POST':
+		data = json.dumps(categories())
+		post_data = request.get_json()
+		partition = data[0:len(data)-1]
+
+		data = partition + ", " + (str(post_data)) + "]"
+		return jsonify(data)
 
 @app.route("/categories:<int:param>")
 def getCategoryById(param):
