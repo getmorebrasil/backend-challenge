@@ -4,7 +4,6 @@ from flask import json
 from flask import request
 
 app = Flask(__name__)
-data = []
 
 @app.route("/")
 def hello():
@@ -12,7 +11,7 @@ def hello():
 
 @app.route("/categories", methods=['POST', 'GET'])
 def getCategories():
-	print(request.method)
+	#print(request.method)
 	if request.method == 'GET':
 		data = jsonify(categories())
 		#print (data)
@@ -20,6 +19,19 @@ def getCategories():
 	if request.method == 'POST':
 		data = json.dumps(categories())
 		post_data = request.get_json()
+
+		categoryIds = post_data['childrenIds']
+
+		for id in categoryIds:
+			idsExistem = False
+			for cat in jsonify(categories()).get_json():
+				if cat['id'] == id:
+					idsExistem = True
+					break
+			if idsExistem == False:
+					return jsonify(message='Uma ou mais categorias filhas nao existem')
+
+		# se submissao aceita
 		partition = data[0:len(data)-1]
 
 		data = partition + ", " + (str(post_data)) + "]"
@@ -36,7 +48,7 @@ def getCategoryById(param):
 	#return "No categories with the solicited id"
 
 def categories():
-	data = [
+	dados = [
 	{
 		'id' : '1',
 		'name' : 'Moda',
@@ -79,7 +91,7 @@ def categories():
 	},
 	
 	]
-	return data
+	return dados
 
 def categories2():
 	data = [
@@ -107,6 +119,7 @@ def categories2():
 	]
 	return data
 
+
+
 if __name__ == "__main__":
 	app.run()
-
