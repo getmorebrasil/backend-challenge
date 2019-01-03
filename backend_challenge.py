@@ -1,9 +1,14 @@
 from flask import Flask
 from flask import jsonify
-from flask import json
+#from flask import json
+import json
 from flask import request
 
 app = Flask(__name__)
+
+# Comando para enviar HTTP POST para app
+#curl -i -H "Content-Type: application/json" -X POST -d '{"id":"10", "name":"Teste2", "childrenIds": []}' http://localhost:5000/categories
+
 
 @app.route("/")
 def hello():
@@ -13,18 +18,30 @@ def hello():
 def getCategories():
 	#print(request.method)
 	if request.method == 'GET':
-		data = jsonify(categories())
+		# Read JSON file
+		with open('data.json') as data_file:
+    			data = json.load(data_file)
+		#data = jsonify(categories())
 		#print (data)
-		return data
+		#cat = categories()
+		#print(cat)
+		#data = json.loads(cat)
+		return jsonify(data)
 	if request.method == 'POST':
-		data = json.dumps(categories())
+		# Read JSON file
+		with open('data.json') as data_file:
+    			data = json.load(data_file)
+		#data = json.dumps(data)
+		#post_data = request.get_json()
+
+		#data = json.loads(categories())
 		post_data = request.get_json()
 
 		categoryIds = post_data['childrenIds']
 
 		for id in categoryIds:
 			idsExistem = False
-			for cat in jsonify(categories()).get_json():
+			for cat in data:#jsonify(categories()).get_json():
 				if cat['id'] == id:
 					idsExistem = True
 					break
@@ -34,18 +51,27 @@ def getCategories():
 		# se submissao aceita
 		partition = data[0:len(data)-1]
 
-		data = partition + ", " + (str(post_data)) + "]"
-		return jsonify(data)
+		#data = partition + ", " + (str(post_data)) + "]"
+		data.append(post_data)
+
+		with open('data.json', 'wb') as outfile:
+    			json.dump(data, outfile)
+
+		return json.dumps(data)#jsonify(data)
 
 @app.route("/categories:<int:param>")
 def getCategoryById(param):
-	data = jsonify(categories())
-	data_json = data.get_json()
-	for cat in data_json:
+	# Read JSON file
+	with open('data.json') as data_file:
+    		data = json.load(data_file)
+	#data_json = jsonify(data).get_json()
+	#data = json.loads(categories())
+	for cat in data: #jsonify(categories()).get_json(): Isto funciona, aquilo nao
 		print(cat)
 		if cat['id'] == str(param):
-			return jsonify(cat)
-	#return "No categories with the solicited id"
+		#	return jsonify(cat)
+			return json.dumps(cat)
+	return "No categories with the solicited id"
 
 def categories():
 	dados = [
@@ -88,10 +114,9 @@ def categories():
 		'id' : '8',
 		'name' : 'Roupas',
 		'categoryIds' : []
-	},
-	
+	}
 	]
-	return dados
+	return json.dumps(dados)
 
 def categories2():
 	data = [
