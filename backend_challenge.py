@@ -52,7 +52,7 @@ def getCategories():
 
 		#partition = data[0:len(data)-1]
 		#data = partition + ", " + (str(request_data)) + "]"
-		
+
 		# if submission is accepted
 		data.append(request_data)
 
@@ -69,7 +69,7 @@ def getCategoryById(param):
 
 	for cat in data:
 		#print(cat)
-		if cat['id'] == str(param):
+		if cat['id'] == param:
 			return jsonify(cat)#json.dumps(cat)
 
 	return jsonify(ok='false', error='InvalidId')
