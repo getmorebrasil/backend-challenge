@@ -6,13 +6,13 @@ from flask import request
 
 app = Flask(__name__)
 
-# Comando para enviar HTTP POST para app
+# Terminal commando to send HTTP POST to program
 #curl -i -H "Content-Type: application/json" -X POST -d '{"id":"10", "name":"Teste2", "childrenIds": []}' http://localhost:5000/categories
 
 
 @app.route("/")
 def hello():
-    return "Welcome to the technical test"
+    return jsonify(message='Welcome to the technical test')
 
 @app.route("/categories", methods=['POST', 'GET'])
 def getCategories():
@@ -21,57 +21,50 @@ def getCategories():
 		# Read JSON file
 		with open('data.json') as data_file:
     			data = json.load(data_file)
-		#data = jsonify(categories())
-		#print (data)
-		#cat = categories()
-		#print(cat)
-		#data = json.loads(cat)
+
 		return jsonify(data)
 	if request.method == 'POST':
 		# Read JSON file
 		with open('data.json') as data_file:
     			data = json.load(data_file)
-		#data = json.dumps(data)
-		#post_data = request.get_json()
 
-		#data = json.loads(categories())
 		post_data = request.get_json()
-
 		categoryIds = post_data['childrenIds']
 
+
+		# for each child Id, scans categories for it. If one is not located, returns an error message
 		for id in categoryIds:
+			#print(id)
 			idsExistem = False
-			for cat in data:#jsonify(categories()).get_json():
-				if cat['id'] == id:
+			for cat in data:
+				if cat['id'] == str(id):
 					idsExistem = True
 					break
 			if idsExistem == False:
-					return jsonify(message='Uma ou mais categorias filhas nao existem')
+					return jsonify(ok='false',error='InvalidCategories')
 
-		# se submissao aceita
+		# if submission is accepted
 		partition = data[0:len(data)-1]
-
 		#data = partition + ", " + (str(post_data)) + "]"
 		data.append(post_data)
 
 		with open('data.json', 'wb') as outfile:
     			json.dump(data, outfile)
 
-		return json.dumps(data)#jsonify(data)
+		return jsonify(ok='true')#json.dumps(data)
 
 @app.route("/categories:<int:param>")
 def getCategoryById(param):
 	# Read JSON file
 	with open('data.json') as data_file:
     		data = json.load(data_file)
-	#data_json = jsonify(data).get_json()
-	#data = json.loads(categories())
-	for cat in data: #jsonify(categories()).get_json(): Isto funciona, aquilo nao
-		print(cat)
+
+	for cat in data:
+		#print(cat)
 		if cat['id'] == str(param):
-		#	return jsonify(cat)
-			return json.dumps(cat)
-	return "No categories with the solicited id"
+			return jsonify(cat)#json.dumps(cat)
+
+	return jsonify(ok='false', error='InvalidId')
 
 def categories():
 	dados = [
@@ -117,34 +110,6 @@ def categories():
 	}
 	]
 	return json.dumps(dados)
-
-def categories2():
-	data = [
-	{
-		'id' : '1',
-		'name' : 'Norton',
-		'categoryIds' : []
-	},
-	{
-		'id' : '2',
-		'name' : 'Norton2',
-		'categoryIds' : []
-	},
-	{
-		'id' : '3',
-		'name' : 'Norton3',
-		'categoryIds' : []
-	},
-	{
-		'id' : '4',
-		'name' : 'Norton4',
-		'categoryIds' : []
-	},
-	
-	]
-	return data
-
-
 
 if __name__ == "__main__":
 	app.run()
