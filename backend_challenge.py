@@ -4,10 +4,13 @@ from flask import jsonify
 import json
 from flask import request
 
+# To run this program, run the following command on bash:
+# $python backend_challenge.py
+
 app = Flask(__name__)
 
-# Terminal commando to send HTTP POST to program
-#curl -i -H "Content-Type: application/json" -X POST -d '{"id":"10", "name":"Teste2", "childrenIds": []}' http://localhost:5000/categories
+# To send HTTP POST to program, run the following command on bash:
+# $curl -i -H "Content-Type: application/json" -X POST -d '{"id":10, "name":"Teste2", "childrenIds": []}' http://localhost:5000/categories
 
 
 @app.route("/")
@@ -28,25 +31,30 @@ def getCategories():
 		with open('data.json') as data_file:
     			data = json.load(data_file)
 
-		post_data = request.get_json()
-		categoryIds = post_data['childrenIds']
+		request_data = request.get_json()
+		categoryIds = request_data['childrenIds']
+
+		for cat in data:
+			if cat['id'] == request_data['id']:
+				return jsonify(ok='false', error='Category already exists')
 
 
 		# for each child Id, scans categories for it. If one is not located, returns an error message
 		for id in categoryIds:
 			#print(id)
-			idsExistem = False
+			idsExist = False
 			for cat in data:
-				if cat['id'] == str(id):
-					idsExistem = True
+				if cat['id'] == id:
+					idsExist = True
 					break
-			if idsExistem == False:
+			if idsExist == False:
 					return jsonify(ok='false',error='InvalidCategories')
 
+		#partition = data[0:len(data)-1]
+		#data = partition + ", " + (str(request_data)) + "]"
+		
 		# if submission is accepted
-		partition = data[0:len(data)-1]
-		#data = partition + ", " + (str(post_data)) + "]"
-		data.append(post_data)
+		data.append(request_data)
 
 		with open('data.json', 'wb') as outfile:
     			json.dump(data, outfile)
@@ -69,42 +77,42 @@ def getCategoryById(param):
 def categories():
 	dados = [
 	{
-		'id' : '1',
+		'id' : 1,
 		'name' : 'Moda',
 		'categoryIds' : [3, 4]
 	},
 	{
-		'id' : '2',
+		'id' : 2,
 		'name' : 'Informatica',
 		'categoryIds' : [5, 6]
 	},
 	{
-		'id' : '3',
+		'id' : 3,
 		'name' : 'Feminino',
 		'categoryIds' : [7]
 	},
 	{
-		'id' : '4',
+		'id' : 4,
 		'name' : 'Masculino',
 		'categoryIds' : [8]
 	},
 	{
-		'id' : '5',
+		'id' : 5,
 		'name' : 'Notebooks',
 		'categoryIds' : []
 	},
 	{
-		'id' : '6',
+		'id' : 6,
 		'name' : 'Tablets',
 		'categoryIds' : []
 	},
 	{
-		'id' : '7',
+		'id' : 7,
 		'name' : 'Roupas',
 		'categoryIds' : []
 	},
 	{
-		'id' : '8',
+		'id' : 8,
 		'name' : 'Roupas',
 		'categoryIds' : []
 	}
