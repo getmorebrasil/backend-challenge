@@ -1,10 +1,28 @@
 const express = require('express');
-var app = express();
+const mustacheExpress = require('mustache-express');
+require('dotenv').config();
 
-app.get('/', function (req, res) {
-	res.send('Servidor rodando');
+
+
+const app = express();
+const mustache = mustacheExpress();
+
+mustache.cache = null;
+
+app.engine('mustache', mustache);
+app.set('view engine', 'mustache');
+
+
+app.use(express.static('public'));
+
+app.get('/list', (req,res) => {
+	res.render('list');
 });
 
-app.listen(3000, function() {
-	console.log('Listening on port 3000');
+app.get('/categories', (req,res) => {
+	res.render('categories');
+});
+
+app.listen(process.env.PORT, function() {
+	console.log(`Listening on port ${process.env.PORT}.`);
 });
