@@ -6,7 +6,12 @@
   <link rel="Stylesheet" href="style.css" />
  </head>
  <body>
-  <h1>Categorias</h1>
-  <p> Adicione as categorias que deseja.</p>
+  <h1>Insira a categoria desejada:</h1>
+  <form method="POST" action="/categories">
+    <input placeholder="id" name="id" />
+    <input placeholder="name" name="name" />
+    <input placeholder="childrenlds EX: {100,200, ...}" name="childrenlds" />
+    <button type="submit">save</button>
+   </form>
  </body>
 </html>
