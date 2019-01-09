@@ -46,3 +46,9 @@ body {
 
 h1 {
   font-size: 2em; }
+
+td {
+  padding: 7px; }
+
+table {
+  margin: 2em; }
