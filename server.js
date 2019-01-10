@@ -32,12 +32,12 @@ app.get('/GET/categories', (req,res) => {
 		});
 });
 //Rota /categories: Permite adicionar uma categoria inserindo ID, Name e ChildrensIds.
-app.get('/POST/categories', (req,res) => {
+app.get('/categories', (req,res) => {
 	res.render('categories');
 });
 //Rota /categories: Metódo POST, adiciona no banco de dados a categoria.
-app.post('/POST/categories', (req,res) => {
-	console.log('post body', req.body);
+app.post('/categories', (req,res) => {
+	//console.log('post body', req.body);
 	const client = new Client();
 	client.connect()
 		.then(() => {
@@ -52,11 +52,11 @@ app.post('/POST/categories', (req,res) => {
 		})
 		.then((result) => {
 			console.log('result?', result);
-			res.redirect('/list');
+			res.redirect('/GET/categories');
 		})
 		.catch((err) => {
 			console.log('err', err)
-			res.redirect('/list');
+			res.redirect('/');
 		});
 });
 //Rota /categories/:id: retorna apenas a categoria com o ID correspondente no banco de dados.
