@@ -4,10 +4,9 @@ import {Model} from "../model/Category";
 export class Category extends BasicManager {
 
     wireCustomListeners () {
-
     }
 
-    get model(): Model {
+    get model(): {Model} {
         return Model;
     }
 
