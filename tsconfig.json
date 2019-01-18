@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2017",
+    "moduleResolution": "node",
+    "outDir": "./build",
+    "sourceMap": true
+  },
+  "include": ["./**/*.ts"],
+  "exclude": [
+    "node_modules",
+    "*.json"
+  ]
+}

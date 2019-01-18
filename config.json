@@ -1,0 +1,18 @@
+{
+  "db": {
+    "mongodb": {
+      "host": "localhost",
+      "name": "backend-challenge",
+      "erase_db": false
+    }
+  },
+  "server": {
+    "domain": "",
+    "port": 1337
+  },
+  "eventConfig": {
+    "wildcard": true,
+    "newListener": true,
+    "maxListener": 2000
+  }
+}

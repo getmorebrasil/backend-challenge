@@ -1,0 +1,42 @@
+{
+  "name": "backend-challenge",
+  "version": "1.0.0",
+  "description": "challenge for backend position @ GetMore",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manfioLP/backend-challenge.git"
+  },
+  "keywords": [
+    "challenge"
+  ],
+  "author": "LeopoldoManfio",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/manfioLP/backend-challenge/issues"
+  },
+  "homepage": "https://github.com/manfioLP/backend-challenge#readme",
+  "dependencies": {
+    "bluebird": "^3.4.7",
+    "eventemitter2": "^0.4.14",
+    "express": "^4.13.4",
+    "mongoose": "^5.1.1",
+    "mongoose-deep-populate": "^3.0.0",
+    "node": "0.0.0",
+    "typescript": "2.3.4",
+    "typings": "^2.1.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "chai-json-schema": "^1.2.0",
+    "jsdoc": "^3.4.0",
+    "mocha": "^2.5.3"
+  }
+}
