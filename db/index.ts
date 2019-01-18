@@ -1,4 +1,4 @@
-import {ManagerMap} from "../interfaces";
+import {ManagerMap} from "../interfaces/ManagerMap";
 import {
     Category
 } from "./managers/Category";
