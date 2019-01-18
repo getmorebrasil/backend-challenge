@@ -1,6 +1,5 @@
 import {Source} from "../../events/Source";
 import {Types, Model} from "mongoose";
-import {error} from "util";
 
 export abstract class BasicManager extends Source {
 
@@ -29,7 +28,7 @@ export abstract class BasicManager extends Source {
 
     answer(idMessage, event, success, error) {
         let data = {
-            success: succes,
+            success: success,
             error: error
         };
 
@@ -42,7 +41,7 @@ export abstract class BasicManager extends Source {
         this.read(msg.data.success).then((ret) => {
            this.answer(msg.id, 'read', ret, null);
         }).catch((err) => {
-            this.answer(msg.id, 'read', null, error);
+            this.answer(msg.id, 'read', null, err);
         });
     }
 
