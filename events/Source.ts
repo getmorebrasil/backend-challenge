@@ -1,6 +1,6 @@
-import Hub from './Hub';
-//const v4 = require "uuidv/v4";
-import uuidv from "uuidv/v4";
+import {Hub} from './Hub';
+const v4 = require ("uuidv/v4");
+// import uuidv from "uuidv/v4";
 
 export class Source {
 
@@ -8,7 +8,7 @@ export class Source {
     private _hub: Hub;
 
     constructor() {
-        this._id = uuidv.v4();
+        this._id = v4();
         this._hub = Hub.getInstance();
     }
 
