@@ -1,7 +1,7 @@
 import {MessageData} from "../interfaces/MessageData";
 import * as BBPromise from "bluebird";
-import uuidv from "uuidv/v4";
 import {Hub} from "./Hub";
+const v4 = require ("uuidv/v4");
 
 export class Message {
 
@@ -13,7 +13,7 @@ export class Message {
     private _id: string;
 
     constructor(sourceId: string, event: string, data: MessageData, previousMessage?: string) {
-        this.id = uuidv.v4();
+        this.id = v4();
         this.data = data;
         this.sourceId = sourceId;
         this.previousMessage = previousMessage;
