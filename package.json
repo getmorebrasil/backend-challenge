@@ -29,10 +29,13 @@
     "mongoose": "^5.1.1",
     "mongoose-deep-populate": "^3.0.0",
     "node": "0.0.0",
+    "path": "^0.12.7",
     "typescript": "2.3.4",
-    "typings": "^2.1.1"
+    "typings": "^2.1.1",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
+    "@types/node": "^10.12.18",
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
     "chai-json-schema": "^1.2.0",
