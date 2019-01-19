@@ -21,7 +21,7 @@ export abstract class BasicRest {
     }
 
     set routes(value) {
-        this._routes = routes;
+        this._routes = value;
     }
 
     wiring() {
