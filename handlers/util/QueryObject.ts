@@ -48,7 +48,7 @@ export class QueryObject {
     }
 
     set populate(value: Object) {
-        this._populate = this.handlePopulate(value_;
+        this._populate = this.handlePopulate(value);
     }
 
     get collation(): Object {
