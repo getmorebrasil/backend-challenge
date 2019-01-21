@@ -3,7 +3,8 @@
     "mongodb": {
       "host": "localhost",
       "name": "backend-challenge-test",
-      "erase_db": false
+      "erase_db": true,
+      "fixtures": "test/fixtures/dev"
     }
   },
   "server": {
