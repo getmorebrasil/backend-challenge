@@ -1,7 +1,7 @@
 import {MessageData} from "../interfaces/MessageData";
 import * as BBPromise from "bluebird";
 import {Hub} from "./Hub";
-const v4 = require ("uuidv/v4");
+const v4 = require ("uuid/v4");
 
 export class Message {
 
