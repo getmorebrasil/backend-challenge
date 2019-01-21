@@ -41,8 +41,21 @@ let Category = new Schema(Object.assign({
     },
 
     childrenIds: {
-        type: [Schema.Types.ObjectId],
+        type: [{
+            type: Schema.Types.ObjectId,
+            ref: 'category'
+        }],
         default: []
+    },
+
+    treeHeight: {
+        type: Schema.Types.Number,
+        default: 1
+    },
+
+    root: {
+        type: Schema.Types.Boolean,
+        default: false
     }
 
     //TODO adicionar caminho reverso (id da categoria pai) ?

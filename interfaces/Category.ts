@@ -3,4 +3,6 @@ export interface Category {
     childrenIds: [string],
     code: number,
     childrenCodes: [number],
+    treeHeight: number,
+    root: boolean
 }

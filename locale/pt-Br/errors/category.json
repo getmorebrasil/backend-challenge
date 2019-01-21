@@ -1,0 +1,58 @@
+{
+  "nonexistent": {
+    "title": "Categoria Inexistente",
+    "description": "O código de categoria informado não existe (pelo menos por enquanto)",
+    "buttons": [
+      {
+        "label": "Registrar Categoria",
+        "method": "createCategory"
+      },
+      {
+        "label": "Ok",
+        "method": null
+      }
+    ],
+    "type": "nonexistentCategory"
+  },
+
+  "errorReturn": {
+    "title": "Error de Retorno",
+    "description": "Algo de errado ocorreu aqui, favor entrar em contato",
+    "buttons": [
+
+      {
+        "label": "Entrar em Contato",
+        "method": "getInTouch"
+      },
+      {
+        "label": "Cancelar",
+        "method": null
+      }
+    ],
+    "type": "errorReturn"
+  },
+
+  "code.REQUIRED": {
+    "title": "Código Obrigatório",
+    "description": "É Obrigatório informar o código de uma categoria",
+    "buttons": [
+      {
+        "label": "Ok",
+        "method": null
+      }
+    ],
+    "type": "code.REQUIRED"
+  },
+
+  "mongoCode11000": {
+    "title": "Chave Duplicada",
+    "description": "Não se pode criar uma categoria com chave única duplicada",
+    "buttons": [
+      {
+        "label": "Ok :(",
+        "method": null
+      }
+    ],
+    "type": "mongoCode11000"
+  }
+}
