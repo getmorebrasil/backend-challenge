@@ -29,16 +29,23 @@ let Category = new Schema(Object.assign({
         required: [true, 'name.REQUIRED']
     },
 
-    childrenIds: {
-        type: [Number],
-        default: []
-    },
-
     code: {
         type: Schema.Types.Number,
         unique: true,
         required: [true, 'code.REQUIRED']
+    },
+
+    childrenCodes: {
+        type: [Number],
+        default: []
+    },
+
+    childrenIds: {
+        type: [Schema.Types.ObjectId],
+        default: []
     }
+
+    //TODO adicionar caminho reverso (id da categoria pai) ?
 }, BasicSchema), schemaOptions);
 
 let CategoryModel = model('category', Category);

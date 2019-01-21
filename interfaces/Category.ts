@@ -1,5 +1,6 @@
 export interface Category {
     name: string,
-    childrenIds: [number],
+    childrenIds: [string],
     code: number,
+    childrenCodes: [number],
 }
