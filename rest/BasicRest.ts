@@ -24,10 +24,26 @@ export abstract class BasicRest {
         this._routes = value;
     }
 
+    wiringget(routes) {
+        for(let route in routes) {
+            if (routes.hasOwnProperty(route))
+                this.router.route(route).get(routes[route]);
+        }
+    }
+
+    wiringpost(routes) {
+        for (let route in routes) {
+            if(routes.hasOwnProperty(route))
+                this.router.route(route).post(routes[route]);
+        }
+    }
+
     wiring() {
         for (let route in this.routes) {
-            if (this.routes.hasOwnProperty(route) && this.routes[route])
-                this[`wiring${route}`](this.routes[route]);
+            if (this.routes.hasOwnProperty(route) && this.routes[route]) {
+                let method = 'wiring' + route;
+                this[method](this.routes[route]);
+            }
         }
     }
 
