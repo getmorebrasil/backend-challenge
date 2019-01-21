@@ -29,7 +29,7 @@ export class Database extends Source {
             await this.mongoose.connect(`mongodb://${config.host}/${config.name}`);
             if (config.eraseDb)
                 await this.databasePopulate();
-            this.hub.send(this, 'banco.ready', {success: true, error: false});
+            this.hub.send(this, 'database.ready', {success: true, error: false});
         } catch (err) {
             console.error(err);
             process.exit(1)
