@@ -6,21 +6,25 @@
       "childrenIds": ["5c453e8dc81ba4f96df44606", "5c453e8df502d626f5638090"],
       "childrenCodes": [11, 12],
       "_id": "5c453e8d8cb6d3f0219540b2",
-      "name": "Moda"
+      "name": "Moda",
+      "treeHeight": 3,
+      "root": true
   },
     {
       "code": 11,
       "childrenIds": ["5c453e8d396bdab90d3d50e7"],
       "childrenCodes": [111],
       "_id": "5c453e8dc81ba4f96df44606",
-      "name": "Feminino"
+      "name": "Feminino",
+      "treeHeight": 2
     },
     {
       "code": 12,
       "childrenIds": ["5c453e8d035349843e15426a"],
       "childrenCodes": [121],
       "_id": "5c453e8df502d626f5638090",
-      "name": "Masculino"
+      "name": "Masculino",
+      "treeHeight": 2
     },
     {
       "code": 111,
@@ -41,19 +45,17 @@
       "childrenIds": ["5c45502a229082b38e13d94c", "5c45502a9d6d3ff8f67edc57"],
       "childrenCodes": [21, 22],
       "_id": "5c453e8d58a4919c3858d93c",
-      "name": "Informatica"
+      "name": "Informatica",
+      "treeHeight": 2,
+      "root": true
     },
     {
       "code": 21,
-      "childrenIds": [],
-      "childrenCodes": [],
       "_id": "5c45502a229082b38e13d94c",
       "name": "Tablets"
     },
     {
       "code": 22,
-      "childrenIds": [],
-      "childrenCodes": [],
       "_id": "5c45502a9d6d3ff8f67edc57",
       "name": "Notebooks"
     }
