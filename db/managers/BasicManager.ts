@@ -15,13 +15,13 @@ export abstract class BasicManager extends Source {
     }
 
     wiring() {
-        this.hub.on(`db${this.eventName}.read`, this.handleRead.bind(this));
-        this.hub.on(`db${this.eventName}.count`, this.handleCount.bind(this));
-        this.hub.on(`db${this.eventName}.create`, this.handleCreate.bind(this));
-        this.hub.on(`db${this.eventName}.update`, this.handleUpdate.bind(this));
-        this.hub.on(`db${this.eventName}.delete`, this.handleDelete.bind(this));
-        this.hub.on(`db${this.eventName}.exists`, this.handleExists.bind(this));
-        this.hub.on(`db${this.eventName}.aggregate`, this.handleAggregate.bind(this));
+        this.hub.on(`db.${this.eventName}.read`, this.handleRead.bind(this));
+        this.hub.on(`db.${this.eventName}.count`, this.handleCount.bind(this));
+        this.hub.on(`db.${this.eventName}.create`, this.handleCreate.bind(this));
+        this.hub.on(`db.${this.eventName}.update`, this.handleUpdate.bind(this));
+        this.hub.on(`db.${this.eventName}.delete`, this.handleDelete.bind(this));
+        this.hub.on(`db.${this.eventName}.exists`, this.handleExists.bind(this));
+        this.hub.on(`db.${this.eventName}.aggregate`, this.handleAggregate.bind(this));
 
         this.wireCustomListeners();
     }
@@ -32,7 +32,7 @@ export abstract class BasicManager extends Source {
             error: error
         };
 
-        this.hub.send(this, `db${this.eventName}.${event}`, data, idMessage);
+        this.hub.send(this, `db.${this.eventName}.${event}`, data, idMessage);
     }
 
     async handleRead(msg) {
