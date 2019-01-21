@@ -26,12 +26,18 @@ let Category = new Schema(Object.assign({
     name: {
         type: Schema.Types.String,
         trim: true,
-        unique: true,
         required: [true, 'name.REQUIRED']
     },
 
     childrenIds: {
         type: [Number],
+        default: []
+    },
+
+    code: {
+        type: Schema.Types.Number,
+        unique: true,
+        required: [true, 'code.REQUIRED']
     }
 }, BasicSchema), schemaOptions);
 
