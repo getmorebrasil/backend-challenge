@@ -18,7 +18,7 @@ export class InitRest extends Source {
         }
 
         process.nextTick(() => {
-            this.hub.send(this, `rest.ready`, {succes: null, error: null});
+            this.hub.send(this, `rest.ready`, {success: null, error: null});
         });
     }
 
