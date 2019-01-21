@@ -28,7 +28,7 @@ export class Database extends Source {
         try {
             await this.mongoose.connect(`mongodb://${config.host}/${config.name}`);
             if (config.eraseDb)
-                await this.databasePopulate();
+                await this.databasePopulate(config.fixtures);
             this.hub.send(this, 'database.ready', {success: true, error: false});
         } catch (err) {
             console.error(err);
@@ -36,20 +36,24 @@ export class Database extends Source {
         }
     }
 
-    async databasePopulate() {
+    async databasePopulate(fixtures: string): Promise<void> {
         await this.mongoose.connection.db.dropDatabase();
-        let dirPath = path.resolve('test/fixtures');
+        let dirPath = path.resolve(fixtures);
         let files = fs.readdirSync(dirPath);
         let promises = [];
         while(files.length > 0) {
-            let file = require(path.join(dirPath,files.shift()));
-            promises.push(this.hub.send(this, `db.${file.model}.create`, {
-                succes: file.data,
+            // let file = require(path.join(dirPath, files.shift()));
+            // promises.push(this.hub.send(this, `db.${file.model}.create`, {
+            //     success: file.data,
+            //     error: null
+            // }).promise);
+            let file = require(path.join(dirPath, files.shift()));
+            promises.push(this.hub.send(this, "db." + file.model + ".create", {
+                success: file.data,
                 error: null
             }).promise);
         }
-
-        await Promise.all(promises);
+        Promise.all(promises);
         promises = [];
         for (let idx in this.managers) {
             if (this.managers.hasOwnProperty(idx)) {
