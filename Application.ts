@@ -1,4 +1,5 @@
 import * as bodyParser from "body-parser";
+import * as express from "express";
 import * as path from 'path';
 import * as http from 'http';
 import * as cors from 'cors';
@@ -12,7 +13,7 @@ export class Application extends Source {
     private database: Database;
     private config: any;
     private http: any;
-    private app: any;
+    private readonly app: any;
 
     constructor(pathConfig: string) {
         super();
