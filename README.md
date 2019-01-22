@@ -62,7 +62,7 @@ Esquema modificado de uma categoria:
 * _Database_ -> Classe com as propriedas do banco de dados Mongo, utiliza da biblioteca mongoose
 * _index_ -> index usado para importação e exportação dos managers
 
-#### :fide_folder: events
+#### :file_folder: events
 * _Hub_ -> Classe utilizado para comunicação por eventos, funciona como um tipo de local por onde todos os eventos passam, utiliza do eventEmitter2 para "escutar" e "enviar" eventos
 * _Message_ -> Classe Mensagem utilizado para enviar mensagens pelo HUB
 * _Source_ -> Classe Source é utilizada para extender todas as demais classes, contém um identificador unico e o HUB.
