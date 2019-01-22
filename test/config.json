@@ -3,13 +3,13 @@
     "mongodb": {
       "host": "localhost",
       "name": "backend-challenge-test",
-      "erase_db": true,
+      "eraseDb": true,
       "fixtures": "test/fixtures/dev"
     }
   },
   "server": {
     "domain": "",
-    "port": 1337
+    "port": 2051
   },
   "eventConfig": {
     "wildcard": true,
