@@ -36,8 +36,32 @@ export class MainHandler extends BasicHandler{
     }
 
     async createCategory(req) {
-        //todo implementar funcao de criar categoria
+        if (req.body.hasOwnProperty('childrenCodes')) {
+            let children = await this.checkChildrenCodes(req.body);
+            if (!children.exists)
+                return this.handlReturn('category', 'nonexistentChildren', MainHandler.ERROR(req.body));
+            req.body.treeHeight = children.treeHeight + 1;
+        }
         let ret = await this.emitToServer('db.category.create', req.body);
-        return this.handlReturn('category', '', ret.data);
+        return this.handlReturn('category', 'errorReturn', ret.data);
+    }
+
+    private async checkChildrenCodes(category: any) {
+        let promises = [];
+        for (let code in category.childrenCodes) {
+            promises.push(await this.emitToServer('db.category.read',
+                new QueryObject({code: category.childrenCodes[code]}, 'name code treeHeight')));
+        }
+        await Promise.all(promises);
+
+        let children = {exists: true, treeHeight: 1};
+        let prom = 0;
+        while (children.exists && prom < promises.length) {
+            children.exists = promises[prom++].data.success.length == 0 ? false : true;
+        }
+
+        children.treeHeight = promises[--prom].data.success.length == 0 ? 1
+            : promises[prom].data.success[0].treeHeight;
+        return children;
     }
 }

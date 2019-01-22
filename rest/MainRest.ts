@@ -33,12 +33,11 @@ export class MainRest extends BasicRest{
     }
 
     async createCategory(req: Request, res: any) {
-        //todo implementar funcao de ligar Rest ao handler
         let ret = await this.handler.createCategory(req);
 
         if(ret.error)
             return res.status(HTTPStatus.BAD_REQUEST).send(ret)
-        return;
+        return res.status(HTTPStatus.CREATED).send(ret);
     }
 
     async getCategories(req: Request, res: any) {
