@@ -54,5 +54,17 @@
       }
     ],
     "type": "mongoCode11000"
+  },
+
+  "nonexistentChildren": {
+    "title": "Categoria Filha Inexistente",
+    "description": "Não se pode criar uma categoria com uma categoria filha que não existe",
+    "buttons": [
+      {
+        "label": "Tranks :(",
+        "method": null
+      }
+    ],
+    "type": "nonexistentChildren"
   }
 }
