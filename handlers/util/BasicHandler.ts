@@ -16,7 +16,6 @@ export class BasicHandler extends Source {
     }
 
     async handlReturn(model: string, errorType: string,data: any) {
-        //todo handleError
         if (data.error || !data.success) {
             if(data.error.name && data.error.name == 'MongoError')
                 errorType = `mongoCode${data.error.code}`;
