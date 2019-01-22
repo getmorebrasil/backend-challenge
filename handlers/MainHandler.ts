@@ -16,9 +16,10 @@ export class MainHandler extends BasicHandler{
         return this.handlReturn('category', 'errorReturn', ret.data);
     }
 
-    async getCategories() {
-        let queryObj = new QueryObject({root: true}, 'childrenCodes childrenIds code name treeHeight');
-        queryObj.populate = this.setNestedPopulate(3);
+    async getCategories(req) {
+        let queryObj = new QueryObject({}, 'childrenCodes childrenIds code name treeHeight', '', {name: 1}, {locale: 'pt', strength: 2}, parseInt(req.query.size), parseInt(req.query.page));
+        queryObj.populate = req.query.nested ? this.setNestedPopulate(3): '';
+        queryObj.query = req.query.nested ? {root: true} : {};
         let ret = await this.emitToServer('db.category.read', queryObj);
 
         return this.handlReturn('category', 'errorReturn', ret.data);

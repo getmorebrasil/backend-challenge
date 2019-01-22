@@ -41,7 +41,7 @@ export class MainRest extends BasicRest{
     }
 
     async getCategories(req: Request, res: any) {
-        let ret = await this.handler.getCategories();
+        let ret = await this.handler.getCategories(req);
         if (ret.error)
             return res.status(HTTPStatus.BAD_REQUEST).send(ret);
         return res.status(HTTPStatus.OK).send(ret.data);
