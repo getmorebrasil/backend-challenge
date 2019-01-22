@@ -31,7 +31,7 @@ Esquema modificado de uma categoria:
 | *root            | `boolean      ` | determina se a categoria é raiz (não é "filho de ninguém") |
 | *treeHeight      | `number`        | identifica a altura do nodo dentro da arvore |
 
-######\* para uso interno da aplicação
+###### *para uso interno da aplicação
 
 ### :package: Estrutura do Projeto
 
@@ -50,9 +50,8 @@ Esquema modificado de uma categoria:
 
 * **test: aqui é o ambiente para teste das funcionalidades da aplicação usando chai-mocha interface**
 
----
 
-#### :filde_folder: db
+#### :file_folder: db
 
 * **managers**
     * _Basic Manager_ -> Classe com as operações básicas de acesso/escrita em banco. Utilizada para extender outras classes Manager
@@ -63,7 +62,7 @@ Esquema modificado de uma categoria:
 * _Database_ -> Classe com as propriedas do banco de dados Mongo, utiliza da biblioteca mongoose
 * _index_ -> index usado para importação e exportação dos managers
 
-#### :filde_folder: events
+#### :file_folder: events
 * _Hub_ -> Classe utilizado para comunicação por eventos, funciona como um tipo de local por onde todos os eventos passam, utiliza do eventEmitter2 para "escutar" e "enviar" eventos
 * _Message_ -> Classe Mensagem utilizado para enviar mensagens pelo HUB
 * _Source_ -> Classe Source é utilizada para extender todas as demais classes, contém um identificador unico e o HUB.
@@ -94,6 +93,8 @@ Esquema modificado de uma categoria:
 * _BasicRest_ -> Classe com funções básicas de uma classe Rest, utilizada para extender.
 * _index_ -> index contendo todos os RESTS, utilizado para importação/exportação
 * _MainRest_ -> Rest principal da aplicação, faz o link entre o cliente e o handler (parte lógica da aplicação)
+
+---
 
 ### :arrow_forward: Rodando a API
 ---
