@@ -1,27 +1,39 @@
 {
-  "name": "javascript-test",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "jwt-express-typeorm",
+  "version": "0.0.1",
+  "description": "Awesome project developed with TypeORM.",
+  "devDependencies": {
+    "ts-node": "3.3.0",
+    "@types/node": "^8.0.29",
+    "typescript": "2.5.2"
+  },
   "dependencies": {
-    "body-parser": "^1.19.0",
-    "express": "^4.16.4",
-    "mongoose": "^5.5.5"
+    "@types/bcryptjs": "^2.4.2",
+    "@types/body-parser": "^1.17.0",
+    "@types/cors": "^2.8.4",
+    "@types/helmet": "0.0.42",
+    "@types/jsonwebtoken": "^8.3.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.1",
+    "class-validator": "^0.9.1",
+    "cors": "^2.8.5",
+    "express": "^4.15.4",
+    "helmet": "^3.15.0",
+    "jsonwebtoken": "^8.4.0",
+    "reflect-metadata": "^0.1.10",
+    "sqlite3": "^4.0.7",
+    "ts-node-dev": "^1.0.0-pre.32",
+    "typeorm": "0.2.12"
   },
-  "devDependencies": {},
-  "scripts": {
-    "start": "node src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/JuanCuttle/backend-challenge.git"
+    "url": "https://github.com/JuanCuttle/typescript-test.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/JuanCuttle/backend-challenge/issues"
-  },
-  "homepage": "https://github.com/JuanCuttle/backend-challenge#readme"
+  "scripts": {
+    "tsc": "tsc",
+    "start": "set debug=* && ts-node-dev --respawn --transpileOnly ./src/index.ts",
+    "prod": "tsc && node ./build/app.js",
+    "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run"
+  }
 }
