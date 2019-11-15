@@ -1,3 +1,24 @@
+## Instruções
+
+Crie uma base de dados MongoDB que será acessada pela aplicação
+
+Depois de baixar/clonar o respositório, entre no diretório raiz e digite
+
+`npm install`
+
+para instalar os pacotes JavaScript utilizados na aplicação.
+
+Dentro do diretório raiz, crie o arquivo **.env** e adicione o seguinte conteúdo
+
+```
+PORT=5000
+DB_CONNECTION=mongodb+srv://....mongodb.net:...
+
+```
+
+O valor da variável BD_CONNECTION deve ser a URL que dá acesso à sua base de dados.
+
+
 # Desafio backend
  
 Você deve desenvolver uma API HTTP para registro e obtenção de categorias.

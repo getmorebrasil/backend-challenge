@@ -1,0 +1,27 @@
+{
+  "name": "backend-challenge",
+  "version": "1.0.0",
+  "description": "Você deve desenvolver uma API HTTP para registro e obtenção de categorias.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mickaelcampos/backend-challenge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mickaelcampos/backend-challenge/issues"
+  },
+  "homepage": "https://github.com/mickaelcampos/backend-challenge#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.7.11",
+    "nodemon": "^1.19.4"
+  }
+}
