@@ -4,16 +4,16 @@ const Categorie = require('../model/Categories')
 
 async function verifyChildrenIds(childrenIds) {
     console.log(childrenIds.length)
+    let allExists = true
     for (let index = 0; index < childrenIds.length; index++) {
         let id = childrenIds[index]
         if (await Categorie.findOne({ id : id }) === null) {
             console.log(`ERROR, The children with ${id} not exist`)
-            return false
-        } else {
-            console.log(`OK, The children with ${id} exist`)
-            return true
+            allExists = false
         }
     }
+    console.log(`OK, all children exists`)
+    return allExists
 }
 
 async function verifyId(id) {
