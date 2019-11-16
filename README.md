@@ -19,6 +19,15 @@ DB_CONNECTION=mongodb+srv://....mongodb.net:...
 O valor da variável DB_CONNECTION deve ser a URL que dá acesso à sua base de dados.
 
 
+### Paginação
+
+Utilizado o plugin mongoose-paginate.
+Exemplo de paginação correta na rota `GET/categories`:
+
+http://localhost:5000/categories?perPage=5&page=2
+
+Por padrão, os parametros foram definidos como perPage=10 e page=1.
+ 
 # Desafio backend
  
 Você deve desenvolver uma API HTTP para registro e obtenção de categorias.
