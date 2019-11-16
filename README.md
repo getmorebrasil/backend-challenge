@@ -16,7 +16,7 @@ DB_CONNECTION=mongodb+srv://....mongodb.net:...
 
 ```
 
-O valor da variável BD_CONNECTION deve ser a URL que dá acesso à sua base de dados.
+O valor da variável DB_CONNECTION deve ser a URL que dá acesso à sua base de dados.
 
 
 # Desafio backend
