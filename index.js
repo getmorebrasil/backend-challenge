@@ -8,10 +8,6 @@ const app = express()
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
-app.get('/', (req, res) => {
-    res.send('hello world')
-})
-
 mongoose.connect(
     process.env.DB_CONNECTION, 
     { useNewUrlParser: true,

@@ -11,11 +11,32 @@ router.post('/', async (req, res) => {
     })
     
     try {
-        const savedCategorie = await categorie.save()
-        res.json(savedCategorie)
+        await categorie.save()
+        res.status(201).json({ ok: true })
     } catch (err) {
         res.json({ message: err })
     }
 })
+
+const filterResult = '-_id -__v'
+
+router.get('/', async (req, res) => {
+    try {
+        const allCategories = await Categorie.find({}).select(filterResult).sort({ 'id' : -1})
+        res.json(allCategories)
+    } catch (err) {
+        res.json({ message: err })
+    }
+})
+
+router.get('/:id', async (req, res) => {
+    try {
+        const OneCategorie = await Categorie.findOne({ id : req.params.id }).select(filterResult)
+        res.json(OneCategorie)
+    } catch (err) {
+        res.json({ message: err })
+    }
+})
+
 
 module.exports = app => app.use('/categories', router)
