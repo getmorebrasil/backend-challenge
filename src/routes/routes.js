@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-const Categorie = require('../model/Categories')
 const controller = require('../controller/controller')
 
 router.post('/', async (req, res) => {

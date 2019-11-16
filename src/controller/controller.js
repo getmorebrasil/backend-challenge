@@ -56,7 +56,7 @@ async function getAllCagetories(req, res) {
             page: parseInt(page, 10) || 1,
             limit: parseInt(perPage, 10) || 10,
             select:   filterResult,
-            sort:     { id: -1 }
+            sort:     { id: 1 }
         }
         const allCategories = await Categorie.paginate({}, optionsPage)
         res.json(allCategories)
