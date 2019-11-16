@@ -2,20 +2,53 @@ const express = require('express')
 const router = express.Router()
 const Categorie = require('../model/Categories')
 
-router.post('/', async (req, res) => {
-    console.log('test')
-    const categorie = new Categorie({
-        id: req.body.id,
-        name: req.body.name,
-        childrenIds: req.body.childrenIds
-    })
-    
-    try {
-        await categorie.save()
-        res.status(201).json({ ok: true })
-    } catch (err) {
-        res.json({ message: err })
+async function verifyChildrenIds(childrenIds) {
+    console.log(childrenIds.length)
+    for (let index = 0; index < childrenIds.length; index++) {
+        let id = childrenIds[index]
+        if (await Categorie.findOne({ id : id }) === null) {
+            console.log(`ERROR, The children with ${id} not exist`)
+            return false
+        } else {
+            console.log(`OK, The children with ${id} exist`)
+            return true
+        }
     }
+}
+
+async function verifyId(id) {
+    if (await Categorie.findOne({ id }) === null) {
+        console.log(`OK, The category with ${id} not exist`)
+        return true
+    } else {
+        console.log(`ERROR, The category with ${id} exist`)
+        return false
+    }
+}
+
+router.post('/', async (req, res) => {
+
+    const id = req.body.id
+    const childrenIds = req.body.childrenIds
+
+    if (await verifyId(id) && await verifyChildrenIds(childrenIds)) {
+        try {
+            
+            const categorie = new Categorie({
+                id: req.body.id,
+                name: req.body.name,
+                childrenIds: req.body.childrenIds
+            })
+
+            await categorie.save()
+            res.status(201).json({ ok: true })
+        } catch (err) {
+            res.json({ message: err })
+        }
+    } else {
+        res.json({ ok : false, error : "InvalidCategories" })
+    }
+    
 })
 
 const filterResult = '-_id -__v'
