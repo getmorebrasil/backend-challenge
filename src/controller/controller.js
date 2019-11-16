@@ -51,7 +51,14 @@ const filterResult = '-_id -__v'
 
 async function getAllCagetories(req, res) {
     try {
-        const allCategories = await Categorie.find({}).select(filterResult).sort({ 'id' : -1})
+        const { page, perPage } = req.query
+        const optionsPage = {
+            page: parseInt(page, 10) || 1,
+            limit: parseInt(perPage, 10) || 10,
+            select:   filterResult,
+            sort:     { id: -1 }
+        }
+        const allCategories = await Categorie.paginate({}, optionsPage)
         res.json(allCategories)
     } catch (err) {
         res.json({ message: err })
