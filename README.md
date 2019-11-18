@@ -1,5 +1,11 @@
 # Desafio backend
- 
+Esse trabalho é a entrega realizado pelo candidado Franck KUMAKO durante o processo seletivo para a vaga "programador Backend Projetos" da empresa getmore em novembro de 2019.
+
+Código que cria rotas para a inserção de categorias, método POST,e também para mostrar as categorias registradas de modo geral, /categories, ou especificadas pelo id, /categories/:id. 
+# Tecnologias
+- Node.js  
+- Express.
+------------Descriçāo do desafio feita pela empresa-----------
 Você deve desenvolver uma API HTTP para registro e obtenção de categorias.
 
 As categorias formam uma árvore, onde cada categoria aponta para seu pai.
@@ -184,3 +190,6 @@ Você pode utilizar qualquer linguagem/framework para desenvolver o servidor. Aq
 - Boas práticas de programação (nomes de variáveis, tamanho de funções, perfomance)
 - Código bem organizado e com uma boa arquitetura
 - Uso de bibliotecas para auxiliar o desenvolvimento
+
+
+
