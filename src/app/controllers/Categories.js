@@ -1,49 +1,7 @@
 import * as Yup from 'yup';
+import state from '../models/Models.js';
 
 //START MODEL - Model simulates database requisitions and responses states
-const Model = {
-  collections: [
-    {
-      id: 1,
-      name: 'Moda',
-      childrenIds: [
-        {
-          id: 100,
-          name: 'masculino',
-          childrenIds: [
-            {
-              id: 200,
-              name: 'T-shirt SEXTOU',
-              childrenIds: []
-            }
-          ]
-        },
-        {
-          id: 101,
-          name: 'feminino',
-          childrenIds: [
-            {
-              id: 201,
-              name: 'T-shirt Contatinho',
-              childrenIds: []
-            }
-          ]
-        }
-      ]
-    },
-  ],
-}
-// Model.collections[0].childrenIds[x]
-//x = 0 MASC
-//x = 1 FEM
-const modaMasc = Model.collections[0].childrenIds[0].childrenIds
-const modaFem = Model.collections[0].childrenIds[1].childrenIds
-const moda = Model.collections[0]
-const category = Model.collections
-
-const allReqs = []
-
-//END MODEL ----------------------------------------------------------------
 
 
 
@@ -64,19 +22,20 @@ class Categories {
       return res.status(400).json({ error: 'creation failed' })
     };
 
-    const thisMascPiece = await req.body;
+    const doc = await req.body;
 
     try {
-      modaMasc.push(thisMascPiece);
-      allReqs.push(this.MascPiece);
+      const obj = state.insertdoc(doc)
+      console.log(state.docs)
     }
+
     catch (err) {
       console.log(err);
       return res.status(400).json({ error: 'something goes wrong' })
     }
 
     return res.json({
-      ok: true
+      ok: true,
     });
   }
   //END Category/moda/masculino FUNCTION REST ------------
@@ -96,11 +55,11 @@ class Categories {
       return res.status(400).json({ error: 'creation failed' })
     }
 
-    const thisFemPiece = await req.body;
+    const doc = await req.body;
 
     try {
-      modaFem.push(thisFemPiece);
-      allReqs.push(this.FemPiece);
+      const obj = state.insertdoc(doc)
+      console.log(state.docs)
     }
     catch (err) {
       console.log(err);
@@ -114,8 +73,8 @@ class Categories {
   //END Category/moda/feminino --------------------------
 
 
-  //START MODA
-  async moda(req, res) {
+  //START MODA Masculina
+  async modaMasculina(req, res) {
 
     const schema = Yup.object().shape({
       id: Yup.number().required(),
@@ -129,11 +88,11 @@ class Categories {
       return res.status(400).json({ error: 'creation failed' })
     }
 
-    const thisModa = await req.body;
+    const subcollection = await req.body;
 
     try {
-      moda.push(thisModa);
-      allReqs.push(thisModa);
+      const obj = state.insertsubcols(subcollection)
+      console.log(state.subcols)
     }
     catch (err) {
       console.log(err);
@@ -145,10 +104,10 @@ class Categories {
       ok: true
     });
   }
-  //END MODA -----------------------------------------
+  //END MODA Masculina-----------------------------------------
 
-  //START Categories 
-  async category(req, res) {
+  //START MODAFEMININA
+  async modaFeminina(req, res) {
 
     const schema = Yup.object().shape({
       id: Yup.number().required(),
@@ -161,14 +120,67 @@ class Categories {
       return res.status(400).json({ error: 'creation failed' })
     }
 
+    const subcollection = await req.body;
+
+    try {
+      const obj = state.insertsubcols(subcollection)
+      console.log(state.subcols)
+    }
+    catch (err) {
+      console.log(err);
+      return res.status(400).json({ error: 'something goes wrong' })
+    }
+
 
 
     return res.json({
       ok: true
     });
   }
-  //END Categories
+  //END MODAFEMININA---------------------------------
 
+  //START Moda
+  async moda(req, res) {
+
+    const schema = Yup.object().shape({
+      id: Yup.number().required(),
+      name: Yup.string().required(),
+      childrenIds: Yup
+        .array().of(Yup.number())
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'creation failed' })
+    }
+
+    const collection = await req.body;
+
+    try {
+      const obj = state.insertcolls(collection)
+      console.log(state.colls)
+    }
+    catch (err) {
+      console.log(err);
+      return res.status(400).json({ error: 'something goes wrong' })
+    }
+
+    return res.json({
+      ok: true
+    });
+  }
+  //END Moda----------------------------
+
+  //START getCategories
+  async getCategories(req, res) {
+
+
+
+
+    return res.json({
+      ok: true
+    });
+  }
+  //END Moda----------------------------
 }
 
 
