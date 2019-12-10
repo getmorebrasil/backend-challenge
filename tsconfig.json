@@ -1,0 +1,6 @@
+{
+    "compilerOptions": {
+        "module": "System"
+    },
+    "exclude": ["node_modules", "docker"]
+}

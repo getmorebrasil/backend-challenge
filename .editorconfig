@@ -1,0 +1,7 @@
+# Set root
+root = true
+# Set Linux Like files
+end_of_line = lf
+tab_width = 4
+indent_style = tab
+insert_final_newline = true

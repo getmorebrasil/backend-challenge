@@ -1,0 +1,5 @@
+# Ignore Docker Containers Folders
+docker/
+
+# Ignore Node Modules
+node_modules/
