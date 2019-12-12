@@ -1,0 +1,24 @@
+{
+  "name": "backend-challenge",
+  "version": "1.0.0",
+  "description": "Você deve desenvolver uma API HTTP para registro e obtenção de categorias.",
+  "main": "service.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/milkfrog/backend-challenge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/milkfrog/backend-challenge/issues"
+  },
+  "homepage": "https://github.com/milkfrog/backend-challenge#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  }
+}
