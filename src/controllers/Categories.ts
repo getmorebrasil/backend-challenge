@@ -1,11 +1,9 @@
-import { FastifyRequest, FastifyReply, RequestHandler } from "fastify";
+import { FastifyRequest, FastifyReply } from "fastify";
 import { ServerResponse } from "http";
 
 import services from "../services";
 
 class Categories {
-    test: RequestHandler;
-
     async routeCategoriesPost(
         req: FastifyRequest,
         res: FastifyReply<ServerResponse>,
@@ -29,13 +27,38 @@ class Categories {
                 res.status(200).send({
                     ok: true,
                 });
-            } catch (e) {
+            } catch (err) {
                 // Notify Error
                 res.status(500).send({
                     ok: false,
-                    error: e.message,
+                    error: err.message,
                 });
             }
+        }
+    }
+
+    async routeCategoriesGetAll(
+        req: FastifyRequest,
+        res: FastifyReply<ServerResponse>,
+    ): Promise<void> {
+        // Try Fetch Data
+        try {
+            // Get Optional Parameters
+            const offset = parseInt(req.query.offset);
+            const limit = parseInt(req.query.limit);
+            // Fetch Data
+            const fetchedCategories = await services.CategoriesService.fetchCategories(
+                offset,
+                limit,
+            );
+            // Send Success
+            res.status(200).send(fetchedCategories);
+        } catch (err) {
+            // Notify Error
+            res.status(500).send({
+                ok: false,
+                error: err.message,
+            });
         }
     }
 }

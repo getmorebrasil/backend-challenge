@@ -20,12 +20,32 @@ class CategoriesService {
                     throw new Error("InvalidCategories");
                 }
             }
-
+            // Create category from data
             await CategoryModel.create(category);
         } catch (err) {
             switch (err.code) {
                 case 11000:
                     throw new Error("CategoryAlreadyExists");
+                default:
+                    throw err;
+            }
+        }
+    }
+
+    async fetchCategories(offset = 0, limit?: number): Promise<Category[]> {
+        // Try fetch categories
+        try {
+            // Set Projection
+            const projection = "-_id id name childrenIds";
+            // Fetch data
+            const fetchedCategories = await CategoryModel.find({}, projection, {
+                skip: offset,
+                limit: limit,
+            }).lean();
+            // Return Projected Data
+            return fetchedCategories;
+        } catch (err) {
+            switch (err.code) {
                 default:
                     throw err;
             }

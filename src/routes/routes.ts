@@ -23,6 +23,23 @@ const routes: RouteOptions[] = [
             },
         },
     },
+
+    {
+        method: "GET",
+        url: "/categories",
+        handler: controllers.Categories.routeCategoriesGetAll,
+        schema: {
+            querystring: {
+                type: "object",
+                properties: {
+                    offset: {
+                        type: "number",
+                    },
+                    limit: { type: "number" },
+                },
+            },
+        },
+    },
 ];
 
 export default routes;
