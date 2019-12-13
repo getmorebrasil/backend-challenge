@@ -1,16 +1,12 @@
 const products = {}
 
-function saveProduct(products) {
-    if (isIdRepeated(products.id)) {
-        
+function saveProduct(product) {
+    if (!products[product.id]){
+        products[product.id] = product
+        return 1
+    } else {
+        return 2
     }
-}
-
-function isIdRepeated(value) {
-    for (let i=0; i < products.length; i++) {
-        if (products[i].id = value) return true
-    }
-    return false
 }
 
 function getProduct(id) {
@@ -20,3 +16,5 @@ function getProduct(id) {
 function getProducts() {
     return Object.values(products)
 }
+
+module.exports = {saveProduct, getProduct, getProducts}
