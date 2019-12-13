@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
-        "module": "System"
+        "module": "System",
+        "moduleResolution": "node"
     },
     "exclude": ["node_modules", "docker"]
 }

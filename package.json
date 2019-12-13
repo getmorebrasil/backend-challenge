@@ -11,6 +11,7 @@
         "dev": "sucrase-node src/index.ts"
     },
     "devDependencies": {
+        "@types/mongoose": "^5.5.34",
         "@types/node": "^12.12.16",
         "@typescript-eslint/eslint-plugin": "^2.11.0",
         "@typescript-eslint/parser": "^2.11.0",
@@ -27,6 +28,11 @@
         "typescript": "^3.7.3"
     },
     "dependencies": {
-        "dotenv": "^8.2.0"
+        "dotenv": "^8.2.0",
+        "fastify": "^2.11.0",
+        "fastify-helmet": "^3.0.2",
+        "fastify-register-routes": "^1.1.2",
+        "mongoose": "^5.8.0",
+        "pino-pretty": "^3.5.0"
     }
 }

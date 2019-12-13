@@ -23,6 +23,7 @@
             "error",
             "double",
             { "avoidEscape": true, "allowTemplateLiterals": true }
-        ]
+        ],
+        "@typescript-eslint/ban-ts-ignore": ["off"]
     }
 }
