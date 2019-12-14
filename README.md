@@ -1,3 +1,7 @@
+# Resolução
+
+Resolução do desafio desenvolvida por Marcelo Contin, aluno de Ciências da Computação pela UFSC, visando uma vaga de estágio da GETMORE.
+
 # Desafio backend
  
 Você deve desenvolver uma API HTTP para registro e obtenção de categorias.
