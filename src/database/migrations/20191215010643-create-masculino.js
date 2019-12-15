@@ -2,26 +2,36 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('masculino', {
+    return queryInterface.createTable('Masculino', {
+
       id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true,
       },
       name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      childrenIds: {
-        type: Sequelize.ENUM(''),
-        allowNull: true,
-        defaultValue: null
+
+      children_ids: {
+        type: Sequelize.ARRAY(Sequelize.INTEGER),
+        allowNull: true
+      },
+
+      created_at: {
+        type: Sequelize.DATE,
+        allowNull: false
+      },
+      updated_at: {
+        type: Sequelize.DATE,
+        allowNull: false
       }
     });
 
   },
 
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('masculino');
+    return queryInterface.dropTable('Masculino');
   }
 };

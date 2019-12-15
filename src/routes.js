@@ -1,9 +1,15 @@
 import { Router } from "express";
-import Categories from "./app/controllers/Categories";
+import Masculino from './app/models/Category'
+import CategoryController from "./app/controllers/CategoryController";
+
+
+
+
+
 
 const routes = new Router();
 
-routes.post("/categories", Categories.postCategory);
+routes.post('/masculino', CategoryController.masc)
 
 
 export default routes;
