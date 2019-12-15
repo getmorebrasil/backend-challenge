@@ -41,7 +41,7 @@ test.serial("[Controller] Categories .routeCategoriesPost", async t => {
 		// Test if mongo have the category created
 		t.true(await mongoose.model("Category").exists(catToCreate));
 	} catch (err) {
-		t.fail(err.message);
+		t.fail(err.message + "\n" + JSON.stringify(err.response.data));
 	}
 });
 
@@ -65,7 +65,7 @@ test.serial("[Controller] Categories .routeCategoriesGetAll", async t => {
 		// Filter response by id
 		t.deepEqual(filteredCat, catToFind, "Category Fetched");
 	} catch (err) {
-		t.fail(err.message);
+		t.fail(err.message + "\n" + JSON.stringify(err.response.data));
 	}
 });
 
@@ -83,7 +83,7 @@ test.serial("[Controller] Categories .routeCategoriesGetById", async t => {
 		// Filter response by id
 		t.deepEqual(data, catToFind, "Category Fetched");
 	} catch (err) {
-		t.fail(err.message);
+		t.fail(err.message + "\n" + JSON.stringify(err.response.data));
 	}
 });
 

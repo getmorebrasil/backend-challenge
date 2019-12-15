@@ -22,6 +22,7 @@ const routes: RouteOptions[] = [
 				},
 			},
 		},
+		attachValidation: true,
 	},
 
 	{
@@ -39,6 +40,7 @@ const routes: RouteOptions[] = [
 				},
 			},
 		},
+		attachValidation: true,
 	},
 
 	{
@@ -51,6 +53,7 @@ const routes: RouteOptions[] = [
 				id: { type: "number" },
 			},
 		},
+		attachValidation: true,
 	},
 ];
 

@@ -9,10 +9,10 @@ class Categories {
 		res: FastifyReply<ServerResponse>,
 	): Promise<void> {
 		// @ts-ignore
-		if (!req.body || req.validation) {
+		if (!req.body || req.validationError) {
 			res.status(400).send({
 				ok: "false",
-				error: "InvalidBody",
+				error: "InvalidRequest",
 			});
 		} else {
 			try {
@@ -41,24 +41,32 @@ class Categories {
 		req: FastifyRequest,
 		res: FastifyReply<ServerResponse>,
 	): Promise<void> {
-		// Try Fetch Data
-		try {
-			// Get Optional Parameters
-			const offset = parseInt(req.query.offset);
-			const limit = parseInt(req.query.limit);
-			// Fetch Data
-			const fetchedCategories = await services.CategoriesService.fetchCategories(
-				offset,
-				limit,
-			);
-			// Send Success
-			res.status(200).send(fetchedCategories);
-		} catch (err) {
-			// Notify Error
-			res.status(500).send({
-				ok: false,
-				error: err.message,
+		// @ts-ignore
+		if (req.validationError) {
+			res.status(400).send({
+				ok: "false",
+				error: "InvalidRequest",
 			});
+		} else {
+			// Try Fetch Data
+			try {
+				// Get Optional Parameters
+				const offset = parseInt(req.query.offset);
+				const limit = parseInt(req.query.limit);
+				// Fetch Data
+				const fetchedCategories = await services.CategoriesService.fetchCategories(
+					offset,
+					limit,
+				);
+				// Send Success
+				res.status(200).send(fetchedCategories);
+			} catch (err) {
+				// Notify Error
+				res.status(500).send({
+					ok: false,
+					error: err.message,
+				});
+			}
 		}
 	}
 
@@ -66,22 +74,30 @@ class Categories {
 		req: FastifyRequest,
 		res: FastifyReply<ServerResponse>,
 	): Promise<void> {
-		// Try Fetch Data
-		try {
-			// Get ID to find
-			const idToFind = parseInt(req.params.id);
-			// Fetch Data
-			const fetchedCategorie = await services.CategoriesService.fetchCategoryById(
-				idToFind,
-			);
-			// Send Success
-			res.status(200).send(fetchedCategorie);
-		} catch (err) {
-			// Notify Error
-			res.status(500).send({
-				ok: false,
-				error: err.message,
+		// @ts-ignore
+		if (req.validationError) {
+			res.status(400).send({
+				ok: "false",
+				error: "InvalidRequest",
 			});
+		} else {
+			// Try Fetch Data
+			try {
+				// Get ID to find
+				const idToFind = parseInt(req.params.id);
+				// Fetch Data
+				const fetchedCategorie = await services.CategoriesService.fetchCategoryById(
+					idToFind,
+				);
+				// Send Success
+				res.status(200).send(fetchedCategorie);
+			} catch (err) {
+				// Notify Error
+				res.status(500).send({
+					ok: false,
+					error: err.message,
+				});
+			}
 		}
 	}
 }

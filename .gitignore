@@ -1,5 +1,7 @@
 # Ignore Docker Containers Folders
-docker/
+# but keep folder
+docker/*
+!docker/.gitkeep
 
 # Ignore Node Modules
 node_modules/
