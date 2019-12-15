@@ -6,7 +6,6 @@ services:
         environment:
             MONGO_INITDB_ROOT_USERNAME: ${MONGODB_ROOT_USER}
             MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_ROOT_PSWD}
-            MONGO_INITDB_DATABASE: test
         # volumes:
         # - "${MONGODB_DATA_PATH}:/data/db"
         ports:

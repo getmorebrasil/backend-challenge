@@ -1,6 +1,7 @@
 {
     "endOfLine": "lf",
     "tabWidth": 4,
+    "useTabs": true,
     "singleQuote": false,
     "quoteProps": "consistent",
     "trailingComma": "all",

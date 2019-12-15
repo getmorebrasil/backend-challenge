@@ -3,3 +3,6 @@ docker/
 
 # Ignore Node Modules
 node_modules/
+
+# Ignore Dist Folder
+dist/
