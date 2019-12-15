@@ -14,5 +14,64 @@ class Masculino extends Model {
     }
 }
 
+class Feminino extends Model {
+    static init(sequelize) {
+        super.init(
+            {
+                name: Sequelize.STRING,
+                children_ids: Sequelize.ARRAY(Sequelize.INTEGER)
+            },
+            {
+                sequelize, freezeTableName: true
+            }
+        )
+    }
+}
 
-export default Masculino
+class Modamasc extends Model {
+    static init(sequelize) {
+        super.init(
+            {
+                name: Sequelize.STRING,
+                children_ids: Sequelize.ARRAY(Sequelize.INTEGER)
+            },
+            {
+                sequelize, freezeTableName: true
+            }
+        )
+    }
+}
+
+class Modafem extends Model {
+    static init(sequelize) {
+        super.init(
+            {
+                name: Sequelize.STRING,
+                children_ids: Sequelize.ARRAY(Sequelize.INTEGER)
+            },
+            {
+                sequelize, freezeTableName: true
+            }
+        )
+    }
+}
+
+class Moda extends Model {
+    static init(sequelize) {
+        super.init(
+            {
+                name: Sequelize.STRING,
+                children_ids: Sequelize.ARRAY(Sequelize.INTEGER)
+            },
+            {
+                sequelize, freezeTableName: true
+            }
+        )
+    }
+}
+
+
+
+
+
+export default [Masculino, Feminino, Modamasc, Modafem, Moda]
