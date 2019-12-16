@@ -12,5 +12,6 @@ routes.post('/category/modafem', CategoryController.modafem);
 routes.post('/category/moda', CategoryController.moda);
 
 routes.get('/category', getInstancesMiddleware);
+routes.get('/category/:id', getInstancesMiddleware);
 
 export default routes;

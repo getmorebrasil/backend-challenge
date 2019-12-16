@@ -11,10 +11,21 @@ const allCategoriesMiddleWare = async function (req, res) {
             })
         })
     })).then(() => {
-        return res.json({
-            log: allInstances
-        })
+        if (req.params.id === undefined) {
+            return res.json({
+                log: allInstances
+            })
+
+        } else {
+            const findInstance = allInstances.find((value) => {
+                return value.id == req.params.id
+            })
+            return res.json({
+                log: findInstance
+            })
+        }
     })
 }
+
 
 export default allCategoriesMiddleWare;
