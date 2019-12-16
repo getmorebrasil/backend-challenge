@@ -71,11 +71,14 @@ The project intent is just to handle two get requests where:
  Port: 5432
  Username: postgres
  password: getmore
- 
+
 ### 3.
+ ** create the migrations with: Yarn sequelize db:migrate
+
+### 4.
  **instal dependencies with yarn or npm**
  
-### 4.
+### 5.
  **pull repository and command yarn dev**
  
 # Code review
