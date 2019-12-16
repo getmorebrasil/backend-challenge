@@ -1,186 +1,203 @@
 # Desafio backend
  
-Você deve desenvolver uma API HTTP para registro e obtenção de categorias.
+## Overview:
+The project intent is just to handle two get requests where:
+- **GET/category** -/ *pull response of all categories registered*
+- **GET/category/:id** -/ *pull response of only the category with the ID expressed by requisition parameter ID: "/:id"*
 
-As categorias formam uma árvore, onde cada categoria aponta para seu pai.
+- **POST/category/masculino**:
+    *push a **"roupa masculina"** json format to the server side in order to store that information in database*
+    
+- **POST/category/feminino**
+    *push a **"roupa feminina"** json format to the server side in order to store that information in database*
+    
+- **POST/category/modamasc**
+    *push a **"moda masculina"** json format to the server side in order to store that information in database*
+    
+- **POST/category/modafem**
+    *push a **"moda feminina"** json format to the server side in order to store that information in database*
+    
+- **POST/category/moda**
+    *push a **"moda"** json format to the server side in order to store that information in database*
 
-Exemplo:
+# Tecnologies
+
+- Node
+- Express
+- Yup
+- Sequelize ORM
+- Postgre
+- Docker
+
+# The project was designed with the following dependencies:
+
 ```
-- Moda
-  - Feminino
-    - Roupas
-  - Masculino
-    - Roupas
-- Informática
-  - Notebooks
-  - Tablets
+  "dependencies": {
+    "bcryptjs": "^2.4.3", //already for authentication
+    "cors": "^2.8.5", //Security for get and post routes
+    "express": "^4.17.1", //node routing lib
+    "helmet": "^3.21.2", //Security for get and post routes
+    "pg": "^7.12.1", //Dependencie for Sequelize
+    "pg-hstore": "^2.3.3", // another Dependencie for Sequelize
+    "sequelize": "^5.21.3", //ORM for POSTGRES
+    "yup": "^0.27.0" //for schemas
+  },
+  "devDependencies": {
+    "eslint": "^6.3.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-prettier": "^3.1.0",
+    "nodemon": "^1.19.1",
+    "prettier": "^1.18.2",
+    "sequelize-cli": "^5.5.1",
+    "sucrase": "^3.10.1"
+  }
+}
 ```
-Esse é o esquema de uma categoria:
+# implementation
+## Requirements
+- Docker
+- PostgreSQL (^9.4)
+- Insomnia (OPTIONAL)
+- Install the dependencies above
 
-| Nome do atributo | Tipo          | Comentário                                                                                      |
-|------------------|---------------|-------------------------------------------------------------------------------------------------|
-| id               | `number`        | Identificador único da categoria                                                                |
-| name             | `string`        | Nome da categoria                                                                               |
-| childrenIds      | `Array<number>` | Lista de ids dos filhos da categoria. É uma lista vazia se a categoria é folha (não tem filhos) |
+### 1. 
+ **Create a container to redirect postgres PORT**
+ **_docker run --name getmore -e POSTGRES_PASSWORD=getmore -p 5432:5432 -d postgres_**
+### 2.
+ **Create connection in postgres with**:
+ Host: localhost
+ Port: 5432
+ Username: postgres
+ password: getmore
  
-## POST /categories
-A rota POST /categories deve receber uma única categoria e registrá-la. 
-Segue um exemplo de requisições criando a árvore "Moda":
-#### 1. Cria a categoria de roupas masculinas
-```json
-Requisição:
-POST /categories
+### 3.
+ **instal dependencies with yarn or npm**
+ 
+### 4.
+ **pull repository and command yarn dev**
+ 
+# Code review
+## Post categories
+Let's comment out how I did it:
+In first sight I though that the posts would receive unique JSON,
+but then I realize that it must have some relationship N:N between the childs,
+
+The first Issue is that in relational database the array don't support foreign keys
+to relate it's child to another table, so I made in a different way I think it's more easy
+to get categories by using only javascript algorithms.
+
+## Let's go the restritions of posts
+the post requests restritions I made with Yup, a lib to create schemas
+that come via creating sequelize model instances from JSON requests.
+
+# Roupas
+The format of "roupas masculinas" and "roupas femininas" is:
+```
 {
   "id": 300,
-  "name": "Roupas",
+  "name": "Camisa sextou",
   "childrenIds": []
-}
-Resposta:
-{
-  "ok": true
 }
 ```
-#### 2. Cria a categoria de roupas femininas
-```json
-POST /categories
-{
-  "id": 301,
-  "name": "Roupas",
-  "childrenIds": []
-}
+I set:
+- min and max value for ID (299, 400)
+- Id is required
+- name is required
+- children_ids allow null
+```
+    const schema = Yup.object().shape({
+      id: Yup.number().moreThan(299).lessThan(400).required(),
+      name: Yup.string().required(),
+      children_ids: Yup.array()
+    });
 
-Resposta:
-{
-  "ok": true
-}
+    if ((await schema.isValid(req.body))) {
+      console.log('registered')
+    } else {
+      return await schema
+        .validate(req.body)
+        .catch((err) => {
+          return res.status(400).json({ error: err.errors })
+        }
+        )
+    }
 ```
-#### 3. Cria a categoria de moda masculina
-```json
-Requisição:
-POST /categories
+# Modas de roupas
+### The format of "moda masculina" and "moda feminina" is:
+```
 {
   "id": 200,
-  "name": "Masculina",
-  "childrenIds": [300],
-}
-
-Resposta:
-{
-  "ok": true
+  "name": "Teen",
+  "childrenIds": [300, 301]
 }
 ```
-#### 4. Cria a categoria de moda feminina
-```json
-Requisição:
-POST /categories
-{
-  "id": 201,
-  "name": "Feminina",
-  "childrenIds": [301]
-}
-
-Resposta:
-{
-  "ok": true
-}
+#### I set:
+- min and max value for ID (199, 300)
+- Id is required
+- name is required
+- children_ids must not be null
+- children_ids required at least (1 char)
 ```
-#### 5. Cria a categoria de moda
-```json
-Requisição:
-POST /categories
-{
-  "id": 100,
-  "name": "Moda",
-  "childrenIds": [200, 201]
-}
+    const schema = Yup.object().shape({
+      id: Yup.number().moreThan(199).lessThan(300).required(),
+      name: Yup.string().required(),
+      children_ids: Yup.array().required().min(1)
+    });
 
-Resposta:
-{
-  "ok": true
-}
+
+    if ((await schema.isValid(req.body))) {
+      console.log('registered')
+    } else {
+      return await schema
+        .validate(req.body)
+        .catch((err) => {
+          return res.status(400).json({ error: err.errors })
+        }
+        )
+    }
 ```
-
-## GET /categories
-A rota `GET/categories` deve retornar uma lista com todas as categorias registradas.
-Exemplo:
-```json
-Requisição:
-GET /categories/1
-
-Resposta:
-[
-  {
-    "id": 1,
-    "name": "Moda", 
-    "childrenIds": [200, 201]
-  },
-  {
-    "id": 201,
-    "name": "Feminina",
-    "childrenIds": [301]
-  },
-  ...
-]
+### the validation for children IDS is: 
 ```
+const { children_ids } = req.body;
 
-## GET /categories/:id
-A rota `GET /categories/:id` deve retornar os dados da categoria com o `id` passado.
-Exemplo:
-```json
-Requisição:
-GET /categories/1
+    //check if childrens exists
+    const hasValidChildren = await Categories[0].findAll({
+      where: {
+        id: children_ids
+      }
+    })
 
-Resposta:
-{
-  "id": 1,
-  "name": "Moda", 
-  "childrenIds": [200, 201]
-}
+    if (hasValidChildren.length !== children_ids.length) {
+      return res.status(401).json({
+        ok: false,
+        error: "InvalidCategories"
+      })
+    }
+
+    try { const modamasc = await Categories[2].create(req.body) }
+    catch (err) { console.log(err) }
+
+    return res.json({
+      ok: true,
+    });
 ```
-# Observação importante
-Note que ao criar a árvore das categorias de moda, nós criamos as categorias em
-reverso (começando nas categorias mais internas).
-Se uma categoria for criada com ids de filhos que não existem, o backend deveria
-apontar um erro. No exemplo a seguir, as categorias 202 e 203 não existem e a
-resposta aponta o erro:
-```json
-Requisição:
-POST /categories
-{
-  "id": 2,
-  "name": "Categoria exemplo",
-  "childrenIds": [200, 201, 202, 203]
-}
+the array above Categories[2] is the model index, 
+the algorithm is checking if the number of instances matched 
+with children_ids is strictly equal to the self children_ids of the request
 
-Resposta:
-{
-  "ok": false,
-  "error": "InvalidCategories"
-}
-```
+
 # Requisitos
 Os requisitos são:
-- Implementar todas as rotas descritas acima;
-- Tratar todos os erros de validação dos dados;
-- Implementar persistência;
+- Implementar todas as rotas descritas acima;  👌😀👍
+- Tratar todos os erros de validação dos dados; 👌😀👍
+- Implementar persistência; 👌😀👍
 # Requisitos adicionais
 Esses requisitos não são obrigatórios:
-- Suportar paginação no `GET /categories`;
+- Suportar paginação no `GET /categories`; 👌😀👍
 # Como começo?
 Aqui vão as etapas:
-- Faça um fork desse repositório;
-- Crie uma Pull Request com sua fork
-# Tecnologias
-Você pode utilizar qualquer linguagem/framework para desenvolver o servidor. Aqui vão algumas sugestões:
+- Faça um fork desse repositório; 👌😀👍
+- Crie uma Pull Request com sua fork 👌😀👍
 
-- Node.js (Express, Koa, etc)
-- Ruby (Rails, Sinatra, etc.)
-- Python (Django, Flask, etc.)
-- Scala (Play, http4s, Scalatra, etc.)
-- qualquer outra linguagem :)
-
-# Requisitos para avaliação
-- Bom uso do git (commits concisos, [boas mensagens de commit](https://github.com/erlang/otp/wiki/writing-good-commit-messages), etc)
-- Boas práticas de programação (nomes de variáveis, tamanho de funções, perfomance)
-- Código bem organizado e com uma boa arquitetura
-- Uso de bibliotecas para auxiliar o desenvolvimento
