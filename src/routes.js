@@ -1,25 +1,17 @@
 import { Router } from "express";
-import multer from 'multer';
-import multerConfig from './config/multer';
-
-import UserController from "./app/controllers/UserController";
-import SessionController from "./app/controllers/SessionController";
-
-import authMiddleware from './app/middlewares/auth';
-
+import Categories from './app/models/Category';
+import CategoryController from "./app/controllers/CategoryController";
+import getInstancesMiddleware from './app/controllers/getCategories';
 
 const routes = new Router();
-const upload = multer(multerConfig);
 
-routes.post("/users", UserController.store);
-routes.post("/sessions", SessionController.store);
+routes.post('/category/masculino', CategoryController.masc);
+routes.post('/category/feminino', CategoryController.fem);
+routes.post('/category/modamasc', CategoryController.modamasc);
+routes.post('/category/modafem', CategoryController.modafem);
+routes.post('/category/moda', CategoryController.moda);
 
-routes.use(authMiddleware);
-
-routes.put("/users", UserController.update);
-
-routes.post('/files', upload.single('file'), (req, res) => {
-    return res.json(req.file);
-});
+routes.get('/category', getInstancesMiddleware);
+routes.get('/category/:id', getInstancesMiddleware);
 
 export default routes;
