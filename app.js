@@ -1,9 +1,8 @@
-const http = require('http');
 const router = require('./router')
-var express = require('express');
-var connector = require('./pgconnector');
+const express = require('express');
+const connector = require('./pgconnector');
 
-var app = express();
+const app = express();
 app.use(express.json());
 
 const ROUTE = "/categories"
@@ -11,11 +10,8 @@ const hostname = '127.0.0.1';
 const port = 3000;
 
 app.route(ROUTE)
-
+	//TODO: verificacoes de input (proibir caracteres, etc.)
 	.post(function(req, res, next){
-		console.log(req.body);
-		console.log(req.body);
-		console.log(req.body);
 		let json = req.body;
 		connector.insert(json.name, json.childrenIds);
 		res.send("SCHEISSE");
@@ -24,7 +20,7 @@ app.route(ROUTE)
 	.get(function(req, res){
 		console.log("GET");
 		res.send("SCHEISSE");
-	})
+	});
 
 app.listen(3000, function(err){
 	if(err){
