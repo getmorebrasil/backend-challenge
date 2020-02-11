@@ -13,7 +13,10 @@ app.route(ROUTE)
 	//TODO: verificacoes de input (proibir caracteres, etc.)
 	.post(function(req, res){
 		let json = req.body;
-		connector.insert(json.name, json.childrenIds, (err, status, message) => {
+
+		//normaliza nomes para poder aplicar regra de nomes únicos
+		//(se certifica que o mesmo nome não pode ser cadastrado novamente por conta de maiúsculas ou minúsculas)
+		connector.insert(json.name.toLowerCase(), json.childrenIds, (err, status, message) => {
 			if(err){
 				res.status(500).send(err.stack);
 			}
