@@ -12,20 +12,26 @@ function get_connection(params = {}){
 		password: 'nodejsbackend',
 		database: params.database || "GETMORE",
 		port: params.port || 5432
-	 });
+	});
 
 	return client;
 }
 
-function insert(name, childrenIds){
+function insert(name, childrenIds, callback){
 
 	let client = get_connection();
+	let status = 0;
+	let message = "";
 	client.connect();
-	client.query(insert_statement, [name]).
-	then(result => {
+	client.query(insert_statement, [name])
+	.then(() => {
+		callback(null, 200, "Categoria " + name + " cadastrada com sucesso.");
 		client.end();
 	})
-	.catch(e => console.error(e.stack));
+	.catch(e => {
+		callback(e);
+		client.end();
+	})
 }
 
 module.exports.insert = insert;
