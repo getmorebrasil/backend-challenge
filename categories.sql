@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS categories;
 
 CREATE TABLE categories(
 	id SMALLINT PRIMARY KEY,
-	name VARCHAR(250) NOT NULL UNIQUE,
+	name VARCHAR(250) NOT NULL,
 	parent_id SMALLINT REFERENCES categories(id)
 );
 
