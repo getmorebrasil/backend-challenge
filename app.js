@@ -17,10 +17,16 @@ app.route(ROUTE)
 		//normaliza nomes para poder aplicar regra de nomes únicos
 		//(se certifica que o mesmo nome não pode ser cadastrado novamente por conta de maiúsculas ou minúsculas)
 		connector.insert(json.id, json.name.toLowerCase(), json.childrenIds, (err, status, message) => {
+			res.append("Content-Type", "application/json");
 			if(err){
-				res.status(500).send(err.stack);
+				res.json({
+					"ok" : false,
+					"error" : err.stack
+				});
 			}
-			res.status(status).send(message);
+			res.json({
+				"ok" : true
+			});
 		});
 	})
 
@@ -29,9 +35,9 @@ app.route(ROUTE)
 		res.send("SCHEISSE");
 	});
 
-app.listen(3000, function(err){
+app.listen(port, function(err){
 	if(err){
 		throw err;
 	}
-	console.log("iuasdhuisdfhuioasdfhasfui");
+	console.log("Server running on port " + port);
 });
