@@ -3,7 +3,6 @@ CREATE DATABASE GETMORE;
 
 DROP USER IF EXISTS getmore;
 CREATE USER getmore WITH PASSWORD 'nodejsbackend';
-GRANT ALL PRIVILEGES ON GETMORE TO getmore;
 
 DROP TABLE IF EXISTS categories;
 
@@ -15,3 +14,5 @@ CREATE TABLE categories(
 
 DROP INDEX IF EXISTS name_index;
 CREATE INDEX name_index ON categories(name);
+
+GRANT ALL PRIVILEGES ON TABLE categories TO getmore;
