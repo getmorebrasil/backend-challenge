@@ -16,7 +16,7 @@ app.route(ROUTE)
 
 		//normaliza nomes para poder aplicar regra de nomes únicos
 		//(se certifica que o mesmo nome não pode ser cadastrado novamente por conta de maiúsculas ou minúsculas)
-		connector.insert(json.name.toLowerCase(), json.childrenIds, (err, status, message) => {
+		connector.insert(json.id, json.name.toLowerCase(), json.childrenIds, (err, status, message) => {
 			if(err){
 				res.status(500).send(err.stack);
 			}
