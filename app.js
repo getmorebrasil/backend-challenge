@@ -24,9 +24,11 @@ app.route(ROUTE)
 					"error" : err.stack
 				});
 			}
-			res.json({
-				"ok" : true
-			});
+			else{
+				res.json({
+					"ok" : true
+				});				
+			}
 		});
 	})
 
