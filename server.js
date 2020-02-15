@@ -12,11 +12,28 @@ app.datasource = datasource(app);
 const Categories = app.datasource.models.Categories;
 
 app.route('/categories').get((req, res) => {
-    Categories.findAll({
-        attributes: ['id', 'name']
-    }).then(function (categories) {
-        res.send(categories);
-    });
+    return Categories.findAll()
+        .then((categories) => res.status(200).send(categories))
+        .catch((err) => {
+            return res.status(400).send(err);
+        });
+});
+
+app.route('/categories/:id').get((req, res) => {
+    return Categories.findAll({
+            where: {
+                id: req.params.id
+            }
+        })
+        .then((categories) => res.status(200).send(categories))
+        .catch((err) => {
+            return res.status(400).send(err);
+        });
+});
+
+app.post('/categories', (req, res) => {
+    return Categories.create({ name : req.body.name })
+        .then(() => res.status(200).send({ok : 'true'}));
 });
 
 app.listen(3002, () => console.log('Server Started'));
