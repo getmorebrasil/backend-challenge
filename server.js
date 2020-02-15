@@ -1,13 +1,22 @@
-require('dotenv').config()
+require('dotenv').config();
 
 const express = require('express')
-const app = express()
+const config = require('./config/config.js');
+const datasource = require('./config/datasource.js');
+
+const app = express();
+
+app.config = config;
+app.datasource = datasource(app);
+
+const Categories = app.datasource.models.Categories;
 
 app.route('/categories').get((req, res) => {
-    res.json([{
-        id: 1,
-        name: "Fabiola"
-    }])
+    Categories.findAll({
+        attributes: ['id', 'name']
+    }).then(function (categories) {
+        res.send(categories);
+    });
 });
 
-app.listen(3002, () => console.log('Server Started'))
+app.listen(3002, () => console.log('Server Started'));
