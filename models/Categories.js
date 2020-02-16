@@ -3,7 +3,6 @@ module.exports = (sequelize, DataType) => {
       id: {
         type: DataType.INTEGER,
         primaryKey: true,
-        autoIncrement: true,
       },
       name: {
         type: DataType.STRING,
@@ -12,6 +11,7 @@ module.exports = (sequelize, DataType) => {
           notEmpty: true,
         },
       },
+      childrenId : DataType.ARRAY(DataType.INTEGER)
     });
     return Categories;
   };
