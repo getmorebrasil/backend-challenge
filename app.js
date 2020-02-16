@@ -11,7 +11,7 @@ const hostname = '127.0.0.1';
 const port = 3000;
 
 app.route(ROUTE)
-	.post(function(req, res){
+	.post((req, res) => {
 		let json = req.body;
 		res.append("Content-Type", "application/json");
 		connector.insert(json.id, json.name, json.childrenIds, err => {
@@ -29,9 +29,8 @@ app.route(ROUTE)
 		});
 	})
 
-	.get(function(req, res){
-		res.append("Content-Type", "application/json");
-		connector.get(null, (err, result) => {
+	.get((req, res) => {
+		connector.get_all((err, result) => {
 			if(err){
 				res.json({
 					"ok" : false,
@@ -44,7 +43,23 @@ app.route(ROUTE)
 		});
 	});
 
-app.listen(port, function(err){
+app.get(ROUTE + "/:id", (req, res) => {
+	connector.get(req.params.id, (err, result) => {
+		if(err){
+			console.log('err: ');
+			console.log(err);
+			res.json({
+				"ok" : false,
+				"error" : err.stack
+			});
+		}
+		else{
+			res.json(result);
+		}		
+	});
+});
+
+app.listen(port, err => {
 	if(err){
 		throw err;
 	}
