@@ -1,7 +1,9 @@
 const {Pool, Client} = require('pg');
 const insert_statement = "INSERT INTO categories(id, name) VALUES ($1, $2)";
 const update_parentage_statement = "UPDATE categories SET parent_id = $1 WHERE id = $2";
-const select_statement = "SELECT * FROM categories WHERE id = $1 OR name = $2";
+const select_statement = "SELECT * FROM categories WHERE id = $1";
+const select_all_statement = "SELECT * FROM categories";
+const select_children_ids_statement = "SELECT id FROM categories WHERE parent_id = $1";
 const delete_statement = "DELETE FROM categories WHERE id = $1";
 
 const inserted_ids = [];
@@ -29,7 +31,7 @@ function insert(id, name, childrenIds, callback){
 		if(childrenIds.length !== 0){
 			_children_ids_subroutine(id, childrenIds, callback);
 		}
-		callback(null, 200, "Categoria " + name + " cadastrada com sucesso.");
+		callback();
 		client.end();
 	})
 	.catch(e => {
@@ -38,17 +40,28 @@ function insert(id, name, childrenIds, callback){
 	})	
 }
 
-function get(id, name = null){
+function get(id = null, callback){
 
 	let client = get_connection();
 	client.connect();
-	client.query(select_statement, [id, name], (err, res) => {
+	client.query(select_all_statement, (err, res) => {
 		if(err){
-			throw err;
+			callback(err);
+			client.end();
 		}
-		client.end();
-		return res.rows[0];
-	})
+		let categories = res.rows;
+		let json = [];
+		for(let i in categories){
+			let category = categories[i];
+			let childrenIds = categories.filter(x => x.parent_id === category.id).map(y => y.id);
+			json.push({
+				id : category.id,
+				name : category.name,
+				childrenIds : childrenIds
+			});
+		}
+		callback(null, json);
+	});
 }
 
 function _confirm_id_exists(id){
@@ -96,3 +109,4 @@ function _children_ids_subroutine(id, childrenIds, callback){
 }
 
 module.exports.insert = insert;
+module.exports.get = get;

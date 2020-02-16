@@ -1,6 +1,7 @@
 const router = require('./router');
 const express = require('express');
 const connector = require('./pgconnector');
+const {titleCase} = require('title-case');
 
 const app = express();
 app.use(express.json());
@@ -10,14 +11,10 @@ const hostname = '127.0.0.1';
 const port = 3000;
 
 app.route(ROUTE)
-	//TODO: verificacoes de input (proibir caracteres, etc.)
 	.post(function(req, res){
 		let json = req.body;
-
-		//normaliza nomes para poder aplicar regra de nomes únicos
-		//(se certifica que o mesmo nome não pode ser cadastrado novamente por conta de maiúsculas ou minúsculas)
-		connector.insert(json.id, json.name.toLowerCase(), json.childrenIds, (err, status, message) => {
-			res.append("Content-Type", "application/json");
+		res.append("Content-Type", "application/json");
+		connector.insert(json.id, json.name, json.childrenIds, err => {
 			if(err){
 				res.json({
 					"ok" : false,
@@ -33,8 +30,18 @@ app.route(ROUTE)
 	})
 
 	.get(function(req, res){
-		console.log("GET");
-		res.send("SCHEISSE");
+		res.append("Content-Type", "application/json");
+		connector.get(null, (err, result) => {
+			if(err){
+				res.json({
+					"ok" : false,
+					"error" : err.stack
+				});
+			}
+			else{
+				res.json(result);
+			}
+		});
 	});
 
 app.listen(port, function(err){
