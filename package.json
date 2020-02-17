@@ -1,0 +1,30 @@
+{
+  "name": "backend-challenge",
+  "version": "1.0.0",
+  "description": "Você deve desenvolver uma API HTTP para registro e obtenção de categorias.",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "node ./tests/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FabiolaKretzer/backend-challenge.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FabiolaKretzer/backend-challenge/issues"
+  },
+  "homepage": "https://github.com/FabiolaKretzer/backend-challenge#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "sequelize": "^5.21.4",
+    "sqlite3": "^4.1.1"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.2"
+  }
+}
