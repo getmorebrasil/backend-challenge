@@ -13,6 +13,12 @@ app.datasource = datasource(app);
 
 const Categories = app.datasource.models.Categories;
 
+//Categories.hasOne(Categories, {)
+
+app.listen(3003, () => console.log('Server Started'));
+
+//ROUTES
+
 app.route('/categories').get((req, res) => {
     return Categories.findAll()
         .then((categories) => res.status(200).send(categories))
@@ -34,13 +40,32 @@ app.route('/categories/:id').get((req, res) => {
 });
 
 app.post('/categories', (req, res) => {
-    return Categories.create({
-            id: req.body.id,
-            name: req.body.name
-        }).then(() => {
-            res.send({'ok': true})
-        })
-    
+    existChildren(req.body.childrenId, function(exist){
+        if (exist) {
+            Categories.create({
+                id: req.body.id,
+                name: req.body.name,
+                childrenId : req.body.childrenId
+            });
+            res.send({'ok': true});
+        } else {
+            res.send({"ok":false,"error":"Children Invalid"});
+        }
+    });    
 });
 
-app.listen(3002, () => console.log('Server Started'));
+//FUNCTIONS POST
+
+function existChildren (id, callback) {
+    return Categories.findAll({
+        where: {
+            id: id
+        }
+    }).then((categories) => {
+        if (Object.keys(categories).length === 0) {
+			return callback(false);
+		} else {
+			return callback(true);
+		}
+    })
+}

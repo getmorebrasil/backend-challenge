@@ -11,7 +11,10 @@ module.exports = (sequelize, DataType) => {
           notEmpty: true,
         },
       },
-      childrenId : DataType.ARRAY(DataType.INTEGER)
-    });
+      childrenId: {
+        type: DataType.INTEGER,
+        foreignKey: true,
+      }
+    })
     return Categories;
   };
