@@ -28,7 +28,7 @@ function categoriesId (id) {
     })
 }
     
-categoriesPost(215, 'ModaMasculina', 214);
+categoriesPost(216, 'ModaMasculina', 214);
 
 categories();
 categoriesId(210);

@@ -13,8 +13,6 @@ app.datasource = datasource(app);
 
 const Categories = app.datasource.models.Categories;
 
-//Categories.hasOne(Categories, {)
-
 app.listen(3003, () => console.log('Server Started'));
 
 //ROUTES
