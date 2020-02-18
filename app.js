@@ -1,6 +1,5 @@
 const express = require('express');
 const connector = require('./pgconnector');
-const {titleCase} = require('title-case');
 const validator = require('./validator');
 const app = express();
 app.use(express.json());
@@ -13,12 +12,19 @@ app.route(ROUTE)
 	.post((req, res) => {
 		let json = req.body;
 		res.append("Content-Type", "application/json");
-
+		let [validated, error_message] = validator.validate_fields(json.id, json.name, json.childrenIds);
+		if(! validated){
+			res.json({
+				"ok" : false, 
+				"error" : error_message
+			});
+			return;
+		}
 		connector.insert(json.id, json.name, json.childrenIds, err => {
 			if(err){
 				res.json({
 					"ok" : false,
-					"error" : err.stack
+					"error" : err.message
 				});
 			}
 			else{
@@ -34,7 +40,7 @@ app.route(ROUTE)
 			if(err){
 				res.json({
 					"ok" : false,
-					"error" : err.stack
+					"error" : err.message
 				});
 			}
 			else{
@@ -50,7 +56,7 @@ app.get(ROUTE + "/:id", (req, res) => {
 			console.log(err);
 			res.json({
 				"ok" : false,
-				"error" : err.stack
+				"error" : err.message
 			});
 		}
 		else{
